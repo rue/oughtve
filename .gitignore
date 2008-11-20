@@ -1,0 +1,6 @@
+# General
+*.swp
+*.tmp
+
+# Specific
+tasks
