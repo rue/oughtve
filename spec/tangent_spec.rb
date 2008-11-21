@@ -71,10 +71,6 @@ describe Oughtve, "creating a new Tangent with --tangent" do
     fail
   end
 
-  it "creates the initial Chapter associated with the Tangent" do
-    fail
-  end
-
   it "raises if a Tangent already exists for this exact path" do
     fail
   end
@@ -101,5 +97,12 @@ describe Oughtve, "creating a new Tangent with --tangent" do
 
   it "raises an error if the --path or --name flag is supplied without an argument" do
     fail
+  end
+
+  it "creates the initial Chapter associated with the Tangent" do
+    Oughtve.run %w[ --tangent --directory /bla ]
+
+    tangent = Oughtve::Tangent.all(:dir.not => "/").first
+    tangent.chapters.size.should == 1
   end
 end
