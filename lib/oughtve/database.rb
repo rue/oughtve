@@ -2,6 +2,7 @@ require "rubygems"
 require "dm-core"
 
 require "oughtve/tangent"
+require "oughtve/chapter"
 
 
 module Oughtve

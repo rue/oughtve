@@ -3,6 +3,13 @@ require "dm-core"
 
 module Oughtve
 
+  # Forward-declare Chapter.
+  class Chapter; end
+
+
+  #
+  # Tangents are directory-based groupings of notes.
+  #
   class Tangent
     include DataMapper::Resource
 
@@ -15,6 +22,12 @@ module Oughtve
     # Name by which the Tangent can be accessed
     property  :name,    String,   :nullable => false
 
+
+    # Currently active Chapter
+    has 1,    :current_chapter,   :class_name => "Chapter"
+
+    # Previous Chapters
+    has n,    :chapters
   end
 
 
@@ -23,8 +36,12 @@ module Oughtve
   #
   def self.tangent(parameters)
     tangent = Tangent.new
+
     tangent.dir   = parameters.dir || Dir.pwd
     tangent.name  = parameters.name || tangent.dir
+
+    tangent.current_chapter = Chapter.new
+
     tangent.save
   end
 
