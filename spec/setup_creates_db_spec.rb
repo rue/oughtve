@@ -30,7 +30,7 @@ describe Oughtve, "initial setup using --setup" do
   it "creates a Sqlite database ~/.oughtve/db" do
     File.exist?(Oughtve::Database::Path).should == false
 
-    Oughtve.run %w[ setup ]
+    Oughtve.run %w[ --setup ]
 
     File.exist?(Oughtve::Database::Path).should == true
   end

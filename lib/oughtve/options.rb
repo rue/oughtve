@@ -9,6 +9,11 @@ module Oughtve
   def self.parse_from(arguments)
     result = OpenStruct.new
 
+    def result.action!(given)
+      raise ArgumentError, "Two actions given: 1) --#{action}, 2) --#{given}" if action
+      self.action = given
+    end
+
     OptionParser.new do |opts|
 
       opts.banner = "Usage: #{$0} [--ACTION [OPTIONS]]"
@@ -17,15 +22,20 @@ module Oughtve
       opts.separator "  Use `#{$0} --help ACTION` for more help."
 
       opts.separator ""
-      opts.separator "  Available actions:"
-      opts.separator ""
-      opts.separator "    new     Create a new Tangent."
-      opts.separator "    scribe  Enter a new note."
-      opts.separator "    setup   Bootstrap database &c. for first use."
+      opts.separator "  Available actions and options:"
+
+
+      # Actions
+
+      opts.on "-n", "--new", "Create new Tangent." do
+        result.action! :tangent
+      end
+
+      opts.on "-s", "--setup", "Set up database and initial structures." do
+        result.action! :setup
+      end
 
       # Options
-      opts.separator ""
-      opts.separator "  Available options:"
 
       opts.on "-d", "--directory DIR", "Use given directory instead of Dir.pwd" do |dir|
         result.dir = dir
@@ -37,16 +47,6 @@ module Oughtve
 
     end.parse! arguments
 
-    result.action = case arguments.first
-                    when "new"
-                      :tangent
-                    when "scribe"
-                      :scribe
-                    when "setup"
-                      :setup
-                    else
-                      raise ArgumentError, "No action named #{ARGV.first}!"
-                    end
     result
   end
 

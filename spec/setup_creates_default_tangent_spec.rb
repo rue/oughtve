@@ -6,7 +6,7 @@ $LOAD_PATH << "#{File.dirname __FILE__}/../lib"
 require "oughtve"
 
 
-describe Oughtve, "initial setup" do
+describe Oughtve, "initial setup using --setup" do
 
   before :all do
     # Delete the dir created by the spec runner to simplify
@@ -29,7 +29,7 @@ describe Oughtve, "initial setup" do
   it "creates the 'default' tangent at /" do
     lambda { Oughtve::Tangent.all.size.should == 0 }.should raise_error
 
-    Oughtve.run %w[ setup ]
+    Oughtve.run %w[ --setup ]
 
     Oughtve::Tangent.all.size.should == 1
     default = Oughtve::Tangent.first
