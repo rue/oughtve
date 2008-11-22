@@ -3,6 +3,7 @@ require "dm-core"
 
 require "oughtve/tangent"
 require "oughtve/chapter"
+require "oughtve/verse"
 
 
 module Oughtve

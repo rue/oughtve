@@ -14,8 +14,8 @@ module Oughtve
     property    :closed_at,   DateTime,     :default => nil
 
 
-    # Tangent to which this Chapter belongs (active or not)
     belongs_to  :tangent
+    has n, :verses
 
   end
 

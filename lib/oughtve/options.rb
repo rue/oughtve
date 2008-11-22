@@ -34,11 +34,19 @@ module Oughtve
         result.action! :tangent
       end
 
-      opts.on "-s", "--setup", "Set up database and initial structures." do
+      opts.on "-s", "--scribe [TEXT]", "Enter a new note." do |text|
+        result.action! :scribe
+        result.text = text
+      end
+
+      opts.on "-S", "--setup", "Set up database and initial structures." do
         result.action! :setup
       end
 
+
       # Options
+      opts.separator ""
+      opts.separator "  Options:"
 
       opts.on "-d", "--directory DIR", "Use given directory instead of Dir.pwd" do |dir|
         result.dir = dir
@@ -48,8 +56,14 @@ module Oughtve
         result.name = name
       end
 
+      opts.on "-x", "--text TEXT", "Text to use for note" do |text|
+        result.text = text
+      end
+
     end.parse! arguments
 
+    result.rest = arguments
+    result.action = :scribe unless result.action
     result
   end
 
