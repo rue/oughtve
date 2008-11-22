@@ -1,10 +1,13 @@
 require "fileutils"
 
-# Project
-require "oughtve/errors"
-require "oughtve/options"
 
-
+#
+# Oughtve is non-instantiable.
+#
+# Most component-specific methods, such as Oughtve.tangent,
+# are implemented in those files. Similarly, the help info
+# for those methods can be found there.
+#
 module Oughtve
 
   #
@@ -16,7 +19,7 @@ module Oughtve
   #
   # Entry point to the library.
   #
-  # Parses arguments and performs the requested action.
+  # Parses arguments and initiates the requested action.
   #
   def self.run(arguments)
     options = parse_from arguments
@@ -31,8 +34,9 @@ module Oughtve
     FileUtils.mkdir_p ResourceDirectory and Database.setup
   end
 
-
 end
 
 require "oughtve/database"
+require "oughtve/errors"
+require "oughtve/options"
 

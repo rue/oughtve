@@ -1,7 +1,7 @@
 require File.join File.dirname(__FILE__), "spec_helper"
 
 
-describe Oughtve, "creating a new Tangent with --tangent when directory given" do
+describe Oughtve, "creating a new Tangent when directory given" do
 
   after :each do
     Oughtve::Tangent.all(:dir.not => "/").each {|t| t.destroy }
@@ -10,7 +10,7 @@ describe Oughtve, "creating a new Tangent with --tangent when directory given" d
   it "creates a new Tangent for the specified directory path" do
     Oughtve::Tangent.all(:dir.not => "/").size.should == 0
 
-    Oughtve.run %w[ --tangent --directory /something ]
+    Oughtve.run %w[ new --directory /something ]
 
     tangents = Oughtve::Tangent.all :dir.not => "/"
     tangents.size.should == 1
@@ -20,14 +20,14 @@ describe Oughtve, "creating a new Tangent with --tangent when directory given" d
   it "does not create a Tangent for the current directory" do
     Oughtve::Tangent.all(:dir.not => "/").size.should == 0
 
-    Oughtve.run %w[ --tangent --directory /something ]
+    Oughtve.run %w[ new --directory /something ]
 
     Oughtve::Tangent.all(:dir.eql => File.dirname(__FILE__)).size.should == 0
   end
 
 end
 
-describe Oughtve, "creating a new Tangent with --tangent when name given" do
+describe Oughtve, "creating a new Tangent when name given" do
 
   after :each do
     Oughtve::Tangent.all(:dir.not => "/").each {|t| t.destroy }
@@ -46,7 +46,7 @@ describe Oughtve, "creating a new Tangent with --tangent when name given" do
 
 end
 
-describe Oughtve, "creating a new Tangent with --tangent without a name" do
+describe Oughtve, "creating a new Tangent without a name" do
 
   after :each do
     Oughtve::Tangent.all(:dir.not => "/").each {|t| t.destroy }

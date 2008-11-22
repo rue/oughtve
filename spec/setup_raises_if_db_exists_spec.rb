@@ -7,7 +7,7 @@ $LOAD_PATH << "#{File.dirname __FILE__}/../lib"
 require "oughtve"
 
 
-describe Oughtve, "initial setup using --setup" do
+describe Oughtve, "initial setup" do
 
   before :all do
     # Delete the dir created by the spec runner to simplify
@@ -31,7 +31,7 @@ describe Oughtve, "initial setup using --setup" do
     FileUtils.mkdir_p File.dirname(Oughtve::Database::Path)
     FileUtils.touch Oughtve::Database::Path
 
-    lambda { Oughtve.run %w[ --setup ] }.should raise_error(OughtveError)
+    lambda { Oughtve.run %w[ setup ] }.should raise_error(OughtveError)
   end
 
 end

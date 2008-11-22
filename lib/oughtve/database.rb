@@ -7,6 +7,12 @@ require "oughtve/chapter"
 
 module Oughtve
 
+  #
+  # Explicit database manipulations.
+  #
+  # The resources are managed through the resource
+  # classes Tangent, Chapter and Verse.
+  #
   module Database
 
     # The database file path.
