@@ -10,19 +10,34 @@ describe Oughtve, "creating a new Tangent when directory given" do
   it "creates a new Tangent for the specified directory path" do
     Oughtve::Tangent.all(:dir.not => "/").size.should == 0
 
-    Oughtve.run %w[ new --directory /something ]
+    Oughtve.run %w[ new --directory /usr ]
 
     tangents = Oughtve::Tangent.all :dir.not => "/"
     tangents.size.should == 1
-    tangents.first.dir.should == "/something"
+    tangents.first.dir.should == "/usr"
   end
 
   it "does not create a Tangent for the current directory" do
     Oughtve::Tangent.all(:dir.not => "/").size.should == 0
 
-    Oughtve.run %w[ new --directory /something ]
+    Oughtve.run %w[ new --directory /usr ]
 
     Oughtve::Tangent.all(:dir.eql => File.dirname(__FILE__)).size.should == 0
+  end
+
+  it "expands the directory name given" do
+    Oughtve::Tangent.all(:dir.not => "/").size.should == 0
+
+    Oughtve.run %w[ new --tangent two --dir ./ ]
+
+    tangents = Oughtve::Tangent.all :dir.not => "/"
+    tangents.size.should == 1
+    tangents.first.dir.should == Dir.pwd
+    tangents.first.name.should == "two"
+  end
+
+  it "raises if the directory does not exist" do
+    lambda { Oughtve.run %w[ new --dir /uggabugga ] }.should raise_error(ArgumentError)
   end
 
 end
@@ -36,11 +51,11 @@ describe Oughtve, "creating a new Tangent when name given" do
   it "stores the given name for the Tangent" do
     Oughtve::Tangent.all(:dir.not => "/").size.should == 0
 
-    Oughtve.run %w[ new --tangent tangy\ toobs --directory /bla ]
+    Oughtve.run %w[ new --tangent tangy\ toobs --directory /tmp ]
 
     tangents = Oughtve::Tangent.all :dir.not => "/"
     tangents.size.should == 1
-    tangents.first.dir.should == "/bla"
+    tangents.first.dir.should == "/tmp"
     tangents.first.name.should == "tangy toobs"
   end
 
@@ -55,20 +70,31 @@ describe Oughtve, "creating a new Tangent without a name" do
   it "uses the path as the Tangent's name also" do
     Oughtve::Tangent.all(:dir.not => "/").size.should == 0
 
-    Oughtve.run %w[ new --directory /bla ]
+    Oughtve.run %w[ new --directory /tmp ]
 
     tangents = Oughtve::Tangent.all :dir.not => "/"
     tangents.size.should == 1
-    tangents.first.dir.should == "/bla"
-    tangents.first.name.should == "/bla"
+    tangents.first.dir.should == "/tmp"
+    tangents.first.name.should == "/tmp"
   end
 
 end
 
-describe Oughtve, "creating a new Tangent with --tangent" do
+describe Oughtve, "creating a new Tangent" do
+
+  after :each do
+    Oughtve::Tangent.all(:dir.not => "/").each {|t| t.destroy }
+  end
 
   it "uses current directory as the path if none is supplied" do
-    fail
+    Oughtve::Tangent.all(:dir.not => "/").size.should == 0
+
+    Oughtve.run %w[ new --tangent hi\ there ]
+
+    tangents = Oughtve::Tangent.all :dir.not => "/"
+    tangents.size.should == 1
+    tangents.first.dir.should == Dir.pwd
+    tangents.first.name.should == "hi there"
   end
 
   it "raises if a Tangent already exists for this exact path" do
@@ -100,7 +126,7 @@ describe Oughtve, "creating a new Tangent with --tangent" do
   end
 
   it "creates the initial Chapter associated with the Tangent" do
-    Oughtve.run %w[ new --tangent something --directory /bla ]
+    Oughtve.run %w[ new --tangent something --directory /tmp ]
 
     tangent = Oughtve::Tangent.all(:dir.not => "/").first
     tangent.chapters.size.should == 1
