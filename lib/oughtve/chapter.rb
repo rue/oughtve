@@ -1,6 +1,3 @@
-require "rubygems"
-require "dm-core"
-
 module Oughtve
 
   # Forward-declare Tangent

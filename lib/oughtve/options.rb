@@ -9,6 +9,9 @@ module Oughtve
   def self.parse_from(arguments)
     result = OpenStruct.new
 
+    # Grab time here to be a bit closer to true
+    result.time = Time.now
+
     def result.action!(given)
       raise ArgumentError, "Two actions given: 1) --#{action}, 2) --#{given}" if action
       self.action = given
@@ -22,7 +25,7 @@ module Oughtve
       opts.separator "  Use `#{$0} --help ACTION` for more help."
 
       opts.separator ""
-      opts.separator "  Available actions and options:"
+      opts.separator "  Actions:"
 
 
       # Actions
