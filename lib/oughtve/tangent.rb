@@ -37,9 +37,10 @@ module Oughtve
   def self.tangent(parameters)
     tangent = Tangent.new
 
-    tangent.dir   = parameters.dir || Dir.pwd
-    tangent.name  = parameters.name || tangent.dir
+    tangent.dir   = File.expand_path(parameters.dir) rescue Dir.pwd
+    raise ArgumentError, "No such directory #{tangent.dir}" unless File.directory? tangent.dir
 
+    tangent.name  = parameters.name || tangent.dir
     tangent.current_chapter = Chapter.new
 
     tangent.save
