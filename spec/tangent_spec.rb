@@ -36,7 +36,7 @@ describe Oughtve, "creating a new Tangent with --tangent when name given" do
   it "stores the given name for the Tangent" do
     Oughtve::Tangent.all(:dir.not => "/").size.should == 0
 
-    Oughtve.run %w[ --tangent --directory /bla --name tangy\ toobs ]
+    Oughtve.run %w[ new --tangent tangy\ toobs --directory /bla ]
 
     tangents = Oughtve::Tangent.all :dir.not => "/"
     tangents.size.should == 1
@@ -55,7 +55,7 @@ describe Oughtve, "creating a new Tangent with --tangent without a name" do
   it "uses the path as the Tangent's name also" do
     Oughtve::Tangent.all(:dir.not => "/").size.should == 0
 
-    Oughtve.run %w[ --tangent --directory /bla ]
+    Oughtve.run %w[ new --directory /bla ]
 
     tangents = Oughtve::Tangent.all :dir.not => "/"
     tangents.size.should == 1
@@ -100,7 +100,7 @@ describe Oughtve, "creating a new Tangent with --tangent" do
   end
 
   it "creates the initial Chapter associated with the Tangent" do
-    Oughtve.run %w[ --tangent --directory /bla ]
+    Oughtve.run %w[ new --tangent something --directory /bla ]
 
     tangent = Oughtve::Tangent.all(:dir.not => "/").first
     tangent.chapters.size.should == 1
