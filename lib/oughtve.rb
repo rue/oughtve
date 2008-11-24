@@ -45,6 +45,7 @@
 
 require "fileutils"
 
+
 # Project
 require "oughtve/errors"
 require "oughtve/options"
@@ -74,6 +75,7 @@ module Oughtve
   #
   def self.bootstrap(*)
     FileUtils.mkdir_p ResourceDirectory and Database.bootstrap
+    run %w[ --new --tangent default --directory / ]
   end
 
 

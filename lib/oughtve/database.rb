@@ -74,10 +74,7 @@ module Oughtve
     #
     def self.bootstrap()
       raise OughtveError, "#{Path} already exists!" if File.exist? Path
-
       connect and DataMapper.auto_migrate!
-
-      Tangent.new(:dir => "/", :name => "default").save
     end
 
   end
