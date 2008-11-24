@@ -169,7 +169,7 @@ module Oughtve
 
     dir = if parameters.dir then File.expand_path(parameters.dir) else Dir.pwd end
 
-    Tangent.all.inject(Tangent.first) {|longest, t|
+    Tangent.all.inject {|longest, t|
       if /\A#{Regexp.escape t.dir}/ =~ dir and t.dir.size > longest.dir.size
         t
       else
