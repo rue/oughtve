@@ -2,12 +2,12 @@
 require "fileutils"
 require "tmpdir"
 
-# We do not want spec_helper since we must check the setup here.
+# We do not want spec_helper since we must check the bootstrap here.
 $LOAD_PATH << "#{File.dirname __FILE__}/../lib"
 require "oughtve"
 
 
-describe Oughtve, "initial setup using --setup" do
+describe Oughtve, "initial bootstrap using --bootstrap" do
 
   before :all do
     # Delete the dir created by the spec runner to simplify
@@ -30,7 +30,7 @@ describe Oughtve, "initial setup using --setup" do
   it "creates a Sqlite database ~/.oughtve/db" do
     File.exist?(Oughtve::Database::Path).should == false
 
-    Oughtve.run %w[ --setup ]
+    Oughtve.run %w[ --bootstrap ]
 
     File.exist?(Oughtve::Database::Path).should == true
   end

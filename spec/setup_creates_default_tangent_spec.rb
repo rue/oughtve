@@ -1,12 +1,12 @@
 require "fileutils"
 require "tmpdir"
 
-# We do not want spec_helper since we must check the setup here.
+# We do not want spec_helper since we must check the bootstrap here.
 $LOAD_PATH << "#{File.dirname __FILE__}/../lib"
 require "oughtve"
 
 
-describe Oughtve, "initial setup using --setup" do
+describe Oughtve, "initial bootstrap using --bootstrap" do
 
   before :all do
     # Delete the dir created by the spec runner to simplify
@@ -29,7 +29,7 @@ describe Oughtve, "initial setup using --setup" do
   it "creates the 'default' tangent at /" do
     lambda { Oughtve::Tangent.all.size.should == 0 }.should raise_error
 
-    Oughtve.run %w[ --setup ]
+    Oughtve.run %w[ --bootstrap ]
 
     Oughtve::Tangent.all.size.should == 1
     default = Oughtve::Tangent.first

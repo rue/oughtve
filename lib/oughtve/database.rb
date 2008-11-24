@@ -72,7 +72,7 @@ module Oughtve
     #
     # Create a brand-new database.
     #
-    def self.setup()
+    def self.bootstrap()
       raise OughtveError, "#{Path} already exists!" if File.exist? Path
 
       connect and DataMapper.auto_migrate!

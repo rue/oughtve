@@ -75,6 +75,10 @@ module Oughtve
 
       # Actions
 
+      opts.on "-b", "--bootstrap", "Set up database and initial structures." do
+        result.action! :bootstrap
+      end
+
       opts.on "-n", "--new", "Create new Tangent." do
         result.action! :tangent
       end

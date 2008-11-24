@@ -2,7 +2,7 @@
 
 # The spec files are designed to be run one at a time
 # because it removes the necessity of completely tearing
-# down the DB setup which is *exceedingly* difficult in
+# down the DB bootstrap which is *exceedingly* difficult in
 # any ORM.
 
 require "fileutils"

@@ -70,10 +70,10 @@ module Oughtve
   end
 
   #
-  # Bootstrap a brand new setup.
+  # Bootstrap a brand new bootstrap.
   #
-  def self.setup(*)
-    FileUtils.mkdir_p ResourceDirectory and Database.setup
+  def self.bootstrap(*)
+    FileUtils.mkdir_p ResourceDirectory and Database.bootstrap
   end
 
 
