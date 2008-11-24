@@ -46,6 +46,9 @@
 require "optparse"
 require "ostruct"
 
+require "oughtve/version"
+
+
 module Oughtve
 
   #
@@ -135,6 +138,22 @@ module Oughtve
 
       opts.on "-v", "--verbose", "Give extra information for some actions." do
         result.verbose = true
+      end
+
+
+      # Bookkeeping stuff
+
+      opts.on_tail "-h", "--help", "Display this message." do
+        puts opts
+        exit
+      end
+
+      opts.on_tail "-V", "--version", "Display Oughtve version" do
+        puts
+        puts "         Oughtve version #{Oughtve::VERSION.join(".")}."
+        puts "Copyright (c) 2006-2008 Eero Saynatkari."
+        puts
+        exit
       end
 
     end.parse! arguments
