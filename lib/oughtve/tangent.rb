@@ -101,6 +101,8 @@ module Oughtve
 
     tangent.current_chapter.verses << verse
     tangent.save
+
+    "So noted (in \"#{tangent.name}\".)"
   end
 
 
@@ -150,6 +152,8 @@ module Oughtve
 
     verse.stricken = parameters.time
     verse.save
+
+    "\"#{verse.text[0..20]}...\" has been stricken."
   end
 
 
@@ -166,6 +170,8 @@ module Oughtve
     tangent.current_chapter = Chapter.new
 
     tangent.save
+
+    "Created #{tangent.name} at #{tangent.dir}."
   end
 
 

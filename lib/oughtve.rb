@@ -76,6 +76,8 @@ module Oughtve
   def self.bootstrap(*)
     FileUtils.mkdir_p ResourceDirectory and Database.bootstrap
     run %w[ --new --tangent default --directory / ]
+
+    "Oughtve has been set up. A default tangent has been created."
   end
 
 
