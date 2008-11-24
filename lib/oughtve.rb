@@ -67,7 +67,7 @@ module Oughtve
   def self.run(arguments)
     options = parse_from arguments
 
-    self.send options.action, options
+    Database.connect and self.send options.action, options
   end
 
   #
