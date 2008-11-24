@@ -71,3 +71,26 @@ describe Oughtve, "listing notes with --verbose" do
   end
 end
 
+describe Oughtve, "listing notes" do
+
+  before :each do
+    Oughtve.run %w[ --new --tangent tangy --directory /tmp ]
+    Oughtve.run %w[ --scribe --tangent tangy Hi bob! ]
+    Oughtve.run %w[ --scribe --tangent tangy Hi Mike! ]
+    Oughtve.run %w[ --scribe --tangent tangy Hi james! ]
+    Oughtve.run %w[ --strike --tangent tangy --match Hi\ j ]
+  end
+
+  after :each do
+    Oughtve::Tangent.all(:name.not => "default").each {|t| t.destroy }
+  end
+
+  it "does not show stricken notes" do
+    outputs = Oughtve.run(%w[ --show --tangent tangy ]).split "\n"
+
+    outputs.size.should == 2
+
+    outputs[0].should =~ /Hi bob!/
+    outputs[1].should =~ /Hi Mike!/
+  end
+end
