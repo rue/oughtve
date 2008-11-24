@@ -79,6 +79,14 @@ module Oughtve
 
 
   #
+  # Show all open defined Tangents and their base directories.
+  #
+  def self.list(*)
+    "Defined tangents:\n" << Tangent.all.map {|t| " - #{t.name} (#{t.dir})" }.join("\n")
+  end
+
+
+  #
   # Enter a new Verse.
   #
   def self.scribe(parameters)
@@ -103,7 +111,7 @@ module Oughtve
     tangent = tangent_for parameters
 
     to_show = tangent.current_chapter.verses.reject {|v| v.stricken}
-    
+
     to_show.map {|v|
       if parameters.verbose
         " - #{v.text} (##{v.id} #{v.time.strftime TimeFormat})"

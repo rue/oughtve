@@ -79,6 +79,10 @@ module Oughtve
         result.action! :bootstrap
       end
 
+      opts.on "-l", "--list", "Show defined Tangents and their base directories." do
+        result.action! :list
+      end
+
       opts.on "-n", "--new", "Create new Tangent." do
         result.action! :tangent
       end
@@ -88,7 +92,7 @@ module Oughtve
         result.text = text
       end
 
-      opts.on "-l", "--show", "Show notes for tangent(s)." do
+      opts.on "-w", "--show", "Show notes for tangent(s)." do
         result.action! :show
       end
 
