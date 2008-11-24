@@ -82,7 +82,9 @@ module Oughtve
   # Enter a new Verse.
   #
   def self.scribe(parameters)
-    text = parameters.text || parameters.rest.join(" ")
+    text = parameters.text || ""
+    text << " " << parameters.rest.join(" ") unless parameters.rest.empty?
+
     raise ArgumentError, "No note!" if text.empty?
 
     tangent = tangent_for parameters

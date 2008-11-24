@@ -104,6 +104,14 @@ describe Oughtve, "scribing a new note" do
     (!!tangent.current_chapter.verses.first.stricken).should_not == true
   end
 
+  it "assumes any straggling nonoption parameters are a part of the text" do
+    Oughtve.run %w[ --scribe --text Aha there ]
+
+    verses = Oughtve::Tangent.all(:name => "scriby").current_chapter.verses
+    verses.size.should == 1
+    verses.first.text.should == "Aha there"
+  end
+
   it "raises an error if no message is given" do
     lambda { Oughtve.run %w[ --scribe --tangent scriby ] }.should raise_error
   end
