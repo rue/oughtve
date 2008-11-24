@@ -130,12 +130,6 @@ namespace :gem do
     s.extra_rdoc_files = rdoc_files
     s.has_rdoc = true
 
-    if test ?f, PROJ.test.file
-      s.test_file = PROJ.test.file
-    else
-      s.test_files = PROJ.test.files.to_a
-    end
-
     # Do any extra stuff the user wants
     PROJ.gem.extras.each do |msg, val|
       case val

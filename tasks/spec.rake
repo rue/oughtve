@@ -4,13 +4,18 @@ require 'spec/rake/verify_rcov'
 
 namespace :spec do
 
-  desc 'Run all specs with basic output'
-  Spec::Rake::SpecTask.new(:run) do |t|
-    t.ruby_opts = PROJ.ruby_opts
-    t.spec_opts = PROJ.spec.opts
-    t.spec_files = PROJ.spec.files
-    t.libs += PROJ.libs
+  desc "Run all specs"
+  task :run do
+    sh "ruby ./spec/spec.rb"
   end
+
+#  desc 'Run all specs with basic output'
+#  Spec::Rake::SpecTask.new(:run) do |t|
+#    t.ruby_opts = PROJ.ruby_opts
+#    t.spec_opts = PROJ.spec.opts
+#    t.spec_files = PROJ.spec.files
+#    t.libs += PROJ.libs
+#  end
 
   desc 'Run all specs with text output'
   Spec::Rake::SpecTask.new(:specdoc) do |t|
