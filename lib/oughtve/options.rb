@@ -88,6 +88,10 @@ module Oughtve
         result.action! :setup
       end
 
+      opts.on "-l", "--show", "Show notes for tangent(s)." do
+        result.action! :show
+      end
+
 
       # Options
       opts.separator ""
@@ -103,6 +107,10 @@ module Oughtve
 
       opts.on "-x", "--text TEXT", "Text to use for note" do |text|
         result.text = text
+      end
+
+      opts.on "-v", "--verbose", "Give extra information for some actions." do
+        result.verbose = true
       end
 
     end.parse! arguments

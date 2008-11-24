@@ -74,6 +74,10 @@ module Oughtve
   end
 
 
+  # The standard time format
+  TimeFormat = "%Y-%m-%d %H:%M:%S"
+
+
   #
   # Enter a new Verse.
   #
@@ -81,17 +85,30 @@ module Oughtve
     text = parameters.text || parameters.rest.join(" ")
     raise ArgumentError, "No note!" if text.empty?
 
-    tangent = if parameters.name
-                Tangent.first :name => parameters.name
-              else
-                tangent_for parameters.dir || Dir.pwd
-              end
+    tangent = tangent_for parameters
 
     verse = Verse.new :text => text, :time => parameters.time
 
     tangent.current_chapter.verses << verse
     tangent.save
   end
+
+
+  #
+  # Output notes for tangent
+  #
+  def self.show(parameters)
+    tangent = tangent_for parameters
+
+    tangent.current_chapter.verses.map {|v|
+      if parameters.verbose
+        " - #{v.text} (#{v.time.strftime TimeFormat})"
+      else
+        " - #{v.text}"
+      end
+    }.join "\n"
+  end
+
 
   #
   # Create a new Tangent.
@@ -114,8 +131,12 @@ module Oughtve
   #
   # Locate Tangent matching given directory closest.
   #
-  def self.tangent_for(dir)
-    Tangent.first :dir => File.expand_path(dir)
+  def self.tangent_for(parameters)
+    return Tangent.first :name => parameters.name if parameters.name
+
+    dir = if parameters.dir then File.expand_path(parameters.dir) else Dir.pwd end
+
+    Tangent.first :dir => dir
   end
 
 end
