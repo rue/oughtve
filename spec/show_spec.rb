@@ -61,12 +61,15 @@ describe Oughtve, "listing notes with --verbose" do
     verses = Oughtve::Tangent.all(:name.eql => "tangy").current_chapter.verses
 
     outputs[0].should =~ /Hi bob!/
+    outputs[0].should =~ /##{verses[0].id}/
     Time.parse(outputs[0].match(/\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d/)[0]).to_i.should == verses[0].time.to_i
 
     outputs[1].should =~ /Hi Mike!/
+    outputs[1].should =~ /##{verses[1].id}/
     Time.parse(outputs[1].match(/\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d/)[0]).to_i.should == verses[1].time.to_i
 
     outputs[2].should =~ /Hi james!/
+    outputs[2].should =~ /##{verses[2].id}/
     Time.parse(outputs[2].match(/\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d/)[0]).to_i.should == verses[2].time.to_i
   end
 end
