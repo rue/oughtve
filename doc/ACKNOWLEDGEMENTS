@@ -1,0 +1,9 @@
+ Acknowledgements
+==================
+
+This repository includes code from the following sources:
+
+- Rake tasks, Rakefile and tasks/ modified from those generated
+  by "Mr. Bones":http://codeforpeople.rubyforge.org/bones/ by
+  Tim Pease.
+

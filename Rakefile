@@ -15,7 +15,7 @@ PROJ.rubyforge.name = PROJ.name
 
 # Author & contact
 PROJ.authors        = "Eero Saynatkari"
-PROJ.email          = "esaynatkari@engineyard.com"
+PROJ.email          = "oughtve@projects.kittensoft.org"
 
 
 # Doc files
