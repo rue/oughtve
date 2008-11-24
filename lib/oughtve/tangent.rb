@@ -111,6 +111,38 @@ module Oughtve
 
 
   #
+  # Strike out an existing note.
+  #
+  # Used to mark a note completed (or just get rid of it.)
+  #
+  def self.strike(parameters)
+    if parameters.serial
+      verse = Verse.get! parameters.serial
+      raise ArgumentError, "Already stricken: #{parameters.serial}" if verse.stricken
+
+      verse.stricken = parameters.time
+      verse.save
+    else
+      tangent = tangent_for parameters
+      candidates = tangent.current_chapter.verses.select {|v| parameters.regexp =~ v.text }
+
+      if candidates.size < 1
+        raise ArgumentError, "No match for #{parameters.regexp.inspect}!"
+      elsif candidates.size > 1
+        # TODO: Show matches
+        raise ArgumentError, "Ambiguous #{parameters.regexp.inspect}!"
+      end
+
+      verse = candidates.first
+      raise ArgumentError, "Already stricken: #{parameters.serial}" if verse.stricken
+
+      verse.stricken = parameters.time
+      verse.save
+    end
+  end
+
+
+  #
   # Create a new Tangent.
   #
   def self.tangent(parameters)

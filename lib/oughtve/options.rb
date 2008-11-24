@@ -88,12 +88,20 @@ module Oughtve
         result.text = text
       end
 
-      opts.on "-S", "--setup", "Set up database and initial structures." do
-        result.action! :setup
-      end
-
       opts.on "-l", "--show", "Show notes for tangent(s)." do
         result.action! :show
+      end
+
+      opts.on "-S", "--strike [ID_OR_REGEXP]", "Strike out a note." do |id_or_regexp|
+        result.action! :strike
+
+        if id_or_regexp
+          begin
+            result.serial = Integer id_or_regexp
+          rescue TypeError
+            result.regexp = /#{Regexp.escape id_or_regexp}/
+          end
+        end
       end
 
 
@@ -101,15 +109,23 @@ module Oughtve
       opts.separator ""
       opts.separator "  Options:"
 
-      opts.on "-d", "--directory DIR", "Use given directory instead of Dir.pwd" do |dir|
+      opts.on "-d", "--directory DIR", "Use given directory instead of Dir.pwd." do |dir|
         result.dir = dir
       end
 
-      opts.on "-t", "--tangent NAME", "Use named Tangent specifically" do |name|
+      opts.on "-i", "--id ID", "Use specific note ID." do |id|
+        result.serial = id
+      end
+
+      opts.on "-m", "--match REGEXP", "Match note using regexp, specific branch only." do |regexp|
+        result.regexp = /#{Regexp.escape regexp}/
+      end
+
+      opts.on "-t", "--tangent NAME", "Use named Tangent specifically." do |name|
         result.name = name
       end
 
-      opts.on "-x", "--text TEXT", "Text to use for note" do |text|
+      opts.on "-x", "--text TEXT", "Text to use for note." do |text|
         result.text = text
       end
 
