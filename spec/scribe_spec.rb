@@ -97,6 +97,13 @@ describe Oughtve, "scribing a new note" do
     (before...after).should include(verses.first.time)
   end
 
+  it "is not stricken" do
+    Oughtve.run %w[ --scribe --text Moo\ there ]
+
+    tangent = Oughtve::Tangent.all(:name => "scriby")
+    (!!tangent.current_chapter.verses.first.stricken).should_not == true
+  end
+
   it "raises an error if no message is given" do
     lambda { Oughtve.run %w[ --scribe --tangent scriby ] }.should raise_error
   end
