@@ -58,7 +58,7 @@ describe Oughtve, "listing notes with --verbose" do
 
   it "includes time when note was scribed" do
     outputs = Oughtve.run(%w[ --show --tangent tangy --verbose ]).split "\n"
-    verses = Oughtve::Tangent.all(:name.eql => "tangy").current_chapter.verses
+    verses = Oughtve::Tangent.first(:name.eql => "tangy").current_chapter.verses
 
     outputs[0].should =~ /Hi bob!/
     outputs[0].should =~ /##{verses[0].id}/

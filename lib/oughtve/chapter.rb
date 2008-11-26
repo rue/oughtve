@@ -57,11 +57,14 @@ module Oughtve
     property    :id,          Serial
 
     # Time when closed
-    property    :closed_at,   DateTime,     :default => nil
+    property    :ended,       Time,     :default => nil
+
+    # Summary of what the chapter was about
+    property    :summary,     Text,     :default => nil
 
 
     belongs_to  :tangent
-    has n, :verses
+    has n,      :verses
 
   end
 

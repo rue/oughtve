@@ -65,17 +65,50 @@ module Oughtve
     # Name by which the Tangent can be accessed
     property  :name,    String,   :nullable => false
 
-
-    # Currently active Chapter
-    has 1,    :current_chapter,   :class_name => "Chapter"
+    # Currently ongoing Chapter
+    property  :current, Integer,  :nullable => false
 
     # Previous Chapters
-    has n,    :chapters
+    has n, :chapters
+
+
+    def current_chapter()
+      Chapter.get! self.current
+    end
+
+    def current_chapter=(chapter)
+      self.current = chapter.id
+      chapter.save
+    end
+
   end
 
 
   # The standard time format
   TimeFormat = "%Y-%m-%d %H:%M:%S"
+
+
+  #
+  # Mark old chapter and start new one.
+  #
+  def self.chapter(parameters)
+    tangent = tangent_for parameters
+    previous = tangent.current_chapter
+
+    previous.summary = parameters.endnote
+    previous.summary << " " << parameters.rest.join(" ") unless parameters.rest.empty?
+
+    previous.ended = parameters.time
+    previous.save
+
+    chapter = tangent.chapters.build
+    chapter.save
+
+    tangent.current_chapter = chapter
+    tangent.save
+
+    "Chapter of \"#{tangent.name}\" finished."
+  end
 
 
   #
@@ -96,11 +129,7 @@ module Oughtve
     raise ArgumentError, "No note!" if text.empty?
 
     tangent = tangent_for parameters
-
-    verse = Verse.new :text => text, :time => parameters.time
-
-    tangent.current_chapter.verses << verse
-    tangent.save
+    tangent.current_chapter.verses.build(:text => text, :time => parameters.time).save
 
     "So noted (in \"#{tangent.name}\".)"
   end
@@ -167,8 +196,11 @@ module Oughtve
     raise ArgumentError, "No such directory #{tangent.dir}" unless File.directory? tangent.dir
 
     tangent.name = parameters.name || tangent.dir
-    tangent.current_chapter = Chapter.new
 
+    chapter = tangent.chapters.build
+    chapter.save
+
+    tangent.current_chapter = chapter
     tangent.save
 
     "Created #{tangent.name} at #{tangent.dir}."

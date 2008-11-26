@@ -16,7 +16,7 @@ describe Oughtve, "scribing a new note with Tangent specified" do
   it "creates a new Verse under the Tangent specified" do
     Oughtve.run %w[ --scribe --tangent scriby --text Hi\ there ]
 
-    verses = Oughtve::Tangent.all(:name => "scriby").current_chapter.verses
+    verses = Oughtve::Tangent.first(:name => "scriby").current_chapter.verses
     verses.size.should == 1
     verses.first.text.should == "Hi there"
   end
@@ -43,7 +43,7 @@ describe Oughtve, "scribing a new note with directory specified" do
   it "creates a new Verse under the Tangent for the directory" do
     Oughtve.run %w[ --scribe --directory /var --text Ho\ there ]
 
-    verses = Oughtve::Tangent.all(:name => "scriby").current_chapter.verses
+    verses = Oughtve::Tangent.first(:name => "scriby").current_chapter.verses
     verses.size.should == 1
     verses.first.text.should == "Ho there"
   end
@@ -66,7 +66,7 @@ describe Oughtve, "scribing a new note without specifying a Tangent or directory
   it "creates a new Verse under the Tangent for current directory" do
     Oughtve.run %w[ --scribe --text Hu\ there ]
 
-    verses = Oughtve::Tangent.all(:name => "scriby").current_chapter.verses
+    verses = Oughtve::Tangent.first(:name => "scriby").current_chapter.verses
     verses.size.should == 1
     verses.first.text.should == "Hu there"
   end
@@ -91,7 +91,7 @@ describe Oughtve, "scribing a new note" do
     Oughtve.run %w[ --scribe --text He\ there ]
     after = Time.now
 
-    verses = Oughtve::Tangent.all(:name => "scriby").current_chapter.verses
+    verses = Oughtve::Tangent.first(:name => "scriby").current_chapter.verses
     verses.size.should == 1
     verses.first.text.should == "He there"
     (before...after).should include(verses.first.time)
@@ -100,14 +100,14 @@ describe Oughtve, "scribing a new note" do
   it "is not stricken" do
     Oughtve.run %w[ --scribe --text Moo\ there ]
 
-    tangent = Oughtve::Tangent.all(:name => "scriby")
+    tangent = Oughtve::Tangent.first :name => "scriby"
     (!!tangent.current_chapter.verses.first.stricken).should_not == true
   end
 
   it "assumes any straggling nonoption parameters are a part of the text" do
     Oughtve.run %w[ --scribe --text Aha there ]
 
-    verses = Oughtve::Tangent.all(:name => "scriby").current_chapter.verses
+    verses = Oughtve::Tangent.first(:name => "scriby").current_chapter.verses
     verses.size.should == 1
     verses.first.text.should == "Aha there"
   end

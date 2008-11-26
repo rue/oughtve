@@ -82,6 +82,11 @@ module Oughtve
         result.action! :bootstrap
       end
 
+      opts.on "-c", "--chapter ENDNOTE", "Mark end of chapter and start new one." do |endnote|
+        result.action! :chapter
+        result.endnote = endnote
+      end
+
       opts.on "-l", "--list", "Show defined Tangents and their base directories." do
         result.action! :list
       end
