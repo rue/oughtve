@@ -12,6 +12,8 @@ PROJ.version        = Oughtve::VERSION.join "."
 PROJ.url            = "http://#{PROJ.name}.kittensoft.org"
 PROJ.rubyforge.name = PROJ.name
 
+PROJ.description    = "Extremely convenient command-line notation tool with directory-based grouping."
+
 
 # Author & contact
 PROJ.authors        = "Eero Saynatkari"
