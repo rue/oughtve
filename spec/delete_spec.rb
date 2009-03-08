@@ -49,4 +49,11 @@ describe Oughtve, "deleting tangents with direct parameter to --delete" do
     Oughtve.run %w[ --delete doomed ]
     Oughtve::Tangent.all(:dir.not => "/").size.should == 0
   end
+
+  it "gives some kind of a confirmation" do
+    output = Oughtve.run %w[ --delete doomed ]
+
+    output.should =~ /doomed/
+    output.should =~ /deleted/i
+  end
 end

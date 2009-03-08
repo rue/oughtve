@@ -135,10 +135,13 @@ module Oughtve
     raise ArgumentError, "Default tangent may not be deleted!" if parameters.name == "default"
 
     tangent = tangent_for parameters
+    path = tangent.dir
 
     raise ArgumentError, "No tangent named `#{parameters.name}'!" unless tangent
 
     tangent.destroy
+
+    "Deleted `#{parameters.name}', which was bound at #{path}"
   end
 
 
