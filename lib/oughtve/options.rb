@@ -112,7 +112,7 @@ module Oughtve
         if id_or_regexp
           begin
             result.serial = Integer(id_or_regexp)
-          rescue TypeError
+          rescue ArgumentError
             result.regexp = /#{Regexp.escape id_or_regexp}/
           end
         end
