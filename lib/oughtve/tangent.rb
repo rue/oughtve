@@ -223,11 +223,20 @@ module Oughtve
   # Locate Tangent matching given directory closest.
   #
   def self.tangent_for(parameters, check_path_too = false)
-    named = if parameters.name
-              t = Tangent.first :name => parameters.name
-              return t unless check_path_too
-              t
-            end
+
+    # *sigh*
+    if parameters.name
+      named = Tangent.first :name => parameters.name
+
+      if named
+        if parameters.dir and named.dir != File.expand_path(parameters.dir)
+          raise ArgumentError, "Given path #{parameters.dir} does not match named `#{named.name}' path #{named.dir}"
+        end
+        return named
+      end
+
+      return named unless check_path_too
+    end
 
     dir = if parameters.dir then File.expand_path(parameters.dir) else Dir.pwd end
 
@@ -237,7 +246,7 @@ module Oughtve
       else
         longest
       end
-    } || named
+    }
   end
 
 end

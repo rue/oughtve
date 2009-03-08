@@ -43,11 +43,21 @@ describe Oughtve, "locating tangents" do
   end
 
   it "by default only checks by name if name given even if tangent exists for path" do
-    Oughtve.tangent_for(OpenStruct.new(:dir => @one_up, :name => "moo")).should == nil
+    Oughtve.tangent_for(OpenStruct.new :dir => @one_up, :name => "moo").should == nil
   end
 
   it "checks path if nonexisting name given if forced with second parameter" do
     Oughtve.tangent_for(OpenStruct.new(:dir => @one_up, :name => "moo"), :check_path).name.should == "one_down"
+  end
+
+  it "raises if both name and directory given but do not match the same one" do
+    lambda {
+      Oughtve.tangent_for(OpenStruct.new :dir => @one_up, :name => "three_down")
+    }.should raise_error
+
+    lambda {
+      Oughtve.tangent_for(OpenStruct.new(:dir => @one_up, :name => "three_down"), :check_path)
+    }.should raise_error
   end
 
 end
