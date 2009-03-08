@@ -102,8 +102,20 @@ module Oughtve
         result.text = text
       end
 
-      opts.on "-w", "--show", "Show notes for tangent(s)." do
+      opts.on "-w", "--show [all | old]", "Show notes for tangent(s). [All notes / old chapters too]" do |specifier|
         result.action! :show
+
+        if specifier
+          case specifier
+          when "all"
+            result.all = true
+          when "old"
+            result.all = true
+            result.old = true
+          else
+            raise ArgumentError, "--show #{specifier} is not a valid option!" 
+          end
+        end
       end
 
       opts.on "-S", "--strike [ID_OR_REGEXP]", "Strike out a note." do |id_or_regexp|

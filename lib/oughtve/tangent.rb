@@ -148,22 +148,47 @@ module Oughtve
 
 
   #
-  # Output notes for tangent
+  # Output notes for tangent.
+  #
+  # Optionally both open and closed; optionally old chapters too.
   #
   def self.show(parameters)
     tangent = tangent_for parameters
 
-    to_show = tangent.current_chapter.verses.reject {|v| v.stricken }
+    message = "*** #{tangent.name} ***"
 
-    message = "#{tangent.name}:\n"
+    chapters = if parameters.old
+                 tangent.chapters.sort_by {|chapter| chapter.ended || Time.now }.reverse
+               else
+                 [tangent.current_chapter]
+               end
 
-    message <<  to_show.map {|v|
-                  if parameters.verbose
-                    " - #{v.text} (##{v.id} #{v.time.strftime TimeFormat})"
-                  else
-                    " - #{v.text}"
-                  end
-                }.join("\n")
+    chapters.each {|chapter|
+      message << "\n\n== #{chapter.summary}, closed at #{chapter.ended.strftime TimeFormat} ==" if chapter.summary
+
+      closed, open = chapter.verses.partition {|v| v.stricken }
+
+      # @todo Remove duplication here, unless different output..
+      message << "\n\n Open:\n"
+      message <<  open.reverse.map {|v|
+                    if parameters.verbose
+                      " - #{v.text} (##{v.id} #{v.time.strftime TimeFormat})"
+                    else
+                      " - #{v.text}"
+                    end
+                  }.join("\n")
+
+      message << "\n\n Closed:\n"
+      message <<  closed.reverse.map {|v|
+                    if parameters.verbose
+                      " * #{v.text} (##{v.id} #{v.time.strftime TimeFormat})"
+                    else
+                      " * #{v.text}"
+                    end
+                  }.join("\n")
+    }
+
+    message
   end
 
 
