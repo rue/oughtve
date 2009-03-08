@@ -74,6 +74,49 @@ describe Oughtve, "marking notes done or closed with --strike using text matchin
 
 end
 
+describe Oughtve, "striking notes with parameter directly to --strike" do
+
+  before :each do
+    Oughtve.run %w[ --new --tangent tangy --directory /tmp ]
+    Oughtve.run %w[ --scribe --tangent tangy Hi bob! ]
+    Oughtve.run %w[ --scribe --tangent tangy Hi Mike! ]
+    Oughtve.run %w[ --scribe --tangent tangy Hi james! ]
+  end
+
+  after :each do
+    Oughtve::Tangent.all(:name.not => "default").each {|t| t.destroy }
+  end
+
+  it "uses parameter as Integer when possible" do
+    verse = Oughtve::Tangent.first(:name.eql => "tangy").current_chapter.verses.last
+
+    (!!verse.stricken).should == false
+
+    before = Time.now
+    Oughtve.run %W[--strike #{verse.id} --tangent tangy ]
+    after = Time.now
+
+    verse = Oughtve::Tangent.first(:name.eql => "tangy").current_chapter.verses.last
+
+    (before..after).should include(verse.stricken)
+  end
+
+  it "uses parameter as regular expression if it is not an Integer" do
+    verse = Oughtve::Tangent.first(:name.eql => "tangy").current_chapter.verses.last
+
+    (!!verse.stricken).should == false
+
+    before = Time.now
+    Oughtve.run %w[ --strike Hi\ j --tangent tangy ]
+    after = Time.now
+
+    verse = Oughtve::Tangent.first(:name.eql => "tangy").current_chapter.verses.last
+
+    (before..after).should include(verse.stricken)
+  end
+
+end
+
 describe Oughtve, "marking notes done or closed with --strike" do
 
   before :each do
