@@ -36,9 +36,10 @@ describe Oughtve, "viewing notes without output options" do
   it "produces a string containing text for all open notes for tangent" do
     outputs = Oughtve.run(%w[ --show --tangent tangy ]).split "\n"
 
-    outputs[0].should =~ /Hi bob!/
-    outputs[1].should =~ /Hi Mike!/
-    outputs[2].should =~ /Hi james!/
+    outputs[0].should =~ /tangy/
+    outputs[1].should =~ /Hi bob!/
+    outputs[2].should =~ /Hi Mike!/
+    outputs[3].should =~ /Hi james!/
   end
 
 end
@@ -60,17 +61,19 @@ describe Oughtve, "viewing notes with --verbose" do
     outputs = Oughtve.run(%w[ --show --tangent tangy --verbose ]).split "\n"
     verses = Oughtve::Tangent.first(:name.eql => "tangy").current_chapter.verses
 
-    outputs[0].should =~ /Hi bob!/
-    outputs[0].should =~ /##{verses[0].id}/
-    Time.parse(outputs[0].match(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/)[0]).to_i.should == verses[0].time.to_i
+    outputs[0].should =~ /tangy/
 
-    outputs[1].should =~ /Hi Mike!/
-    outputs[1].should =~ /##{verses[1].id}/
-    Time.parse(outputs[1].match(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/)[0]).to_i.should == verses[1].time.to_i
+    outputs[1].should =~ /Hi bob!/
+    outputs[1].should =~ /##{verses[0].id}/
+    Time.parse(outputs[1].match(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/)[0]).to_i.should == verses[0].time.to_i
 
-    outputs[2].should =~ /Hi james!/
-    outputs[2].should =~ /##{verses[2].id}/
-    Time.parse(outputs[2].match(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/)[0]).to_i.should == verses[2].time.to_i
+    outputs[2].should =~ /Hi Mike!/
+    outputs[2].should =~ /##{verses[1].id}/
+    Time.parse(outputs[2].match(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/)[0]).to_i.should == verses[1].time.to_i
+
+    outputs[3].should =~ /Hi james!/
+    outputs[3].should =~ /##{verses[2].id}/
+    Time.parse(outputs[3].match(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/)[0]).to_i.should == verses[2].time.to_i
   end
 end
 
@@ -91,9 +94,10 @@ describe Oughtve, "viewing notes" do
   it "does not show stricken notes" do
     outputs = Oughtve.run(%w[ --show --tangent tangy ]).split "\n"
 
-    outputs.size.should == 2
+    outputs.size.should == 3
 
-    outputs[0].should =~ /Hi bob!/
-    outputs[1].should =~ /Hi Mike!/
+    outputs[0].should =~ /tangy/
+    outputs[1].should =~ /Hi bob!/
+    outputs[2].should =~ /Hi Mike!/
   end
 end

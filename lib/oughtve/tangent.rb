@@ -153,13 +153,15 @@ module Oughtve
 
     to_show = tangent.current_chapter.verses.reject {|v| v.stricken }
 
-    to_show.map {|v|
-      if parameters.verbose
-        " - #{v.text} (##{v.id} #{v.time.strftime TimeFormat})"
-      else
-        " - #{v.text}"
-      end
-    }.join "\n"
+    message = "#{tangent.name}:\n"
+    
+    message <<  to_show.map {|v|
+                  if parameters.verbose
+                    " - #{v.text} (##{v.id} #{v.time.strftime TimeFormat})"
+                  else
+                    " - #{v.text}"
+                  end
+                }.join("\n")
   end
 
 
