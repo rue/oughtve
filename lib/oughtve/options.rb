@@ -130,6 +130,11 @@ module Oughtve
         end
       end
 
+      opts.on "-D", "--delete [NAME]", "Delete tangent." do |name|
+        result.action! :delete
+        result.name = name if name
+      end
+
 
       # Options
       opts.separator ""

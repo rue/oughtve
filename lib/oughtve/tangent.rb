@@ -126,6 +126,23 @@ module Oughtve
 
 
   #
+  # Delete a tangent.
+  #
+  # @todo Does not touch Chapters or Verses.
+  #
+  def self.delete(parameters)
+    raise ArgumentError, "Must provide name to delete!" unless parameters.name
+    raise ArgumentError, "Default tangent may not be deleted!" if parameters.name == "default"
+
+    tangent = tangent_for parameters
+
+    raise ArgumentError, "No tangent named `#{parameters.name}'!" unless tangent
+
+    tangent.destroy
+  end
+
+
+  #
   # Show all open defined Tangents and their base directories.
   #
   def self.list(*)
