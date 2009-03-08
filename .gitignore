@@ -2,3 +2,7 @@
 *.swp
 *.tmp
 
+# setup.rb
+.config
+InstalledFiles
+
