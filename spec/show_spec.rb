@@ -35,7 +35,7 @@ describe Oughtve, "viewing notes without output options" do
 
   it "produces a string containing text for all open notes for tangent" do
     outputs = Oughtve.run(%w[ --show --tangent tangy ]).split "\n"
-    outputs.reject! {|line| line.nil? or line.empty? }
+    outputs.reject! {|line| line.nil? or line.empty? or line.strip =~ /^(-|=)+$/ }
 
     outputs.shift.should =~ /tangy/
     outputs.shift.should =~ /Open/
@@ -61,7 +61,7 @@ describe Oughtve, "viewing notes with --verbose" do
 
   it "includes time when note was scribed" do
     outputs = Oughtve.run(%w[ --show --tangent tangy --verbose ]).split "\n"
-    outputs.reject! {|line| line.nil? or line.empty? }
+    outputs.reject! {|line| line.nil? or line.empty? or line.strip =~ /^(-|=)+$/ }
     verses = Oughtve::Tangent.first(:name.eql => "tangy").current_chapter.verses.reverse
 
     outputs.shift.should =~ /tangy/
@@ -100,7 +100,7 @@ describe Oughtve, "viewing notes" do
 
   it "does not show stricken notes" do
     outputs = Oughtve.run(%w[ --show --tangent tangy ]).split "\n"
-    outputs.reject! {|line| line.nil? or line.empty? }
+    outputs.reject! {|line| line.nil? or line.empty? or line.strip =~ /^(-|=)+$/ }
 
     outputs.shift.should =~ /tangy/
     outputs.shift.should =~ /Open/
@@ -124,7 +124,7 @@ describe Oughtve, "viewing both stricken and open notes with all" do
 
   it "shows stricken notes" do
     outputs = Oughtve.run(%w[ --show all --tangent tangy ]).split "\n"
-    outputs.reject! {|line| line.nil? or line.empty? }
+    outputs.reject! {|line| line.nil? or line.empty? or line.strip =~ /^(-|=)+$/ }
 
     outputs.shift.should =~ /tangy/
     outputs.shift.should =~ /Open/
@@ -160,7 +160,7 @@ describe Oughtve, "viewing every note for a tangent form current and previous ch
 
   it "shows all notes from this and previous chapters" do
     outputs = Oughtve.run(%w[ --show old --tangent tangy ]).split "\n"
-    outputs.reject! {|line| line.nil? or line.empty? }
+    outputs.reject! {|line| line.nil? or line.empty? or line.strip =~ /^(-|=)+$/ }
 
     outputs.shift.should =~ /tangy/
 
@@ -186,6 +186,58 @@ describe Oughtve, "viewing every note for a tangent form current and previous ch
 
     outputs.shift.should =~ /Closed/
     outputs.shift.should =~ /Hi Mike!/
+  end
+end
+
+describe Oughtve, "dumping a Tangent to YAML" do
+  before :each do
+    Oughtve.run %w[ --new --tangent tangy --directory /tmp ]
+    Oughtve.run %w[ --scribe --tangent tangy Hi bob! ]
+    Oughtve.run %w[ --scribe --tangent tangy Hi Mike! ]
+    Oughtve.run %w[ --scribe --tangent tangy Hi james! ]
+    Oughtve.run %w[ --strike --tangent tangy --match Hi\ M ]
+    Oughtve.run %w[ --chapter End of part 1 --tangent tangy ]
+    Oughtve.run %w[ --scribe --tangent tangy Hi Mo! ]
+    Oughtve.run %w[ --scribe --tangent tangy Hi Bo! ]
+    Oughtve.run %w[ --strike --tangent tangy --match Hi\ B ]
+    Oughtve.run %w[ --chapter End of part 2 --tangent tangy ]
+    Oughtve.run %w[ --scribe --tangent tangy Hi go! ]
+    Oughtve.run %w[ --scribe --tangent tangy Hi lo! ]
+    Oughtve.run %w[ --strike --tangent tangy --match Hi\ l ]
+  end
+
+  after :each do
+    Oughtve::Tangent.all(:name.not => "default").each {|t| t.destroy }
+  end
+
+  it "contains all the data.. *sigh*" do
+    fail
+  end
+end
+
+describe Oughtve, "dumping a Tangent to JSON" do
+  before :each do
+    Oughtve.run %w[ --new --tangent tangy --directory /tmp ]
+    Oughtve.run %w[ --scribe --tangent tangy Hi bob! ]
+    Oughtve.run %w[ --scribe --tangent tangy Hi Mike! ]
+    Oughtve.run %w[ --scribe --tangent tangy Hi james! ]
+    Oughtve.run %w[ --strike --tangent tangy --match Hi\ M ]
+    Oughtve.run %w[ --chapter End of part 1 --tangent tangy ]
+    Oughtve.run %w[ --scribe --tangent tangy Hi Mo! ]
+    Oughtve.run %w[ --scribe --tangent tangy Hi Bo! ]
+    Oughtve.run %w[ --strike --tangent tangy --match Hi\ B ]
+    Oughtve.run %w[ --chapter End of part 2 --tangent tangy ]
+    Oughtve.run %w[ --scribe --tangent tangy Hi go! ]
+    Oughtve.run %w[ --scribe --tangent tangy Hi lo! ]
+    Oughtve.run %w[ --strike --tangent tangy --match Hi\ l ]
+  end
+
+  after :each do
+    Oughtve::Tangent.all(:name.not => "default").each {|t| t.destroy }
+  end
+
+  it "contains all the data.. *sigh*" do
+    fail
   end
 end
 

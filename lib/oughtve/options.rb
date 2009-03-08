@@ -102,6 +102,18 @@ module Oughtve
         result.text = text
       end
 
+      opts.on "-S", "--strike [ID_OR_REGEXP]", "Strike out a note." do |id_or_regexp|
+        result.action! :strike
+
+        if id_or_regexp
+          begin
+            result.serial = Integer(id_or_regexp)
+          rescue ArgumentError
+            result.regexp = /#{Regexp.escape id_or_regexp}/
+          end
+        end
+      end
+
       opts.on "-w", "--show [all | old]", "Show notes for tangent(s). [All notes / old chapters too]" do |specifier|
         result.action! :show
 
@@ -114,18 +126,6 @@ module Oughtve
             result.old = true
           else
             raise ArgumentError, "--show #{specifier} is not a valid option!" 
-          end
-        end
-      end
-
-      opts.on "-S", "--strike [ID_OR_REGEXP]", "Strike out a note." do |id_or_regexp|
-        result.action! :strike
-
-        if id_or_regexp
-          begin
-            result.serial = Integer(id_or_regexp)
-          rescue ArgumentError
-            result.regexp = /#{Regexp.escape id_or_regexp}/
           end
         end
       end
@@ -157,6 +157,14 @@ module Oughtve
 
       opts.on "-v", "--verbose", "Give extra information for some actions." do
         result.verbose = true
+      end
+
+      opts.on "-J", "--json", "JSON output" do
+        result.format = :json
+      end
+
+      opts.on "-Y", "--yaml", "YAML output" do
+        result.format = :yaml
       end
 
 

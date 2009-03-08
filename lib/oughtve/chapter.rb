@@ -69,6 +69,24 @@ module Oughtve
     belongs_to  :tangent
     has n,      :verses
 
+
+    #
+    # Hash representation of data, including all verses.
+    #
+    def to_hash()
+      closed, open = verses.partition {|verse| verse.stricken }
+      hash = {:open => open.map {|v| v.to_hash },
+              :closed => closed.map {|v| v.to_hash }
+             }
+
+      if ended
+        hash[:ended] = ended
+        hash[:summary] = summary
+      end
+
+      hash
+    end
+
   end
 
 end

@@ -43,7 +43,6 @@
 #   Authors are not responsible for any damages, direct or indirect.
 #
 
-
 module Oughtve
 
   # Forward-declare Chapter.
@@ -82,6 +81,18 @@ module Oughtve
     def current_chapter=(chapter)
       self.current = chapter.id
       chapter.save
+    end
+
+    #
+    # Hash representation, including all Verses.
+    #
+    def to_hash()
+      {
+       :name => name,
+       :dir => dir,
+       :current => current_chapter.to_hash,
+       :old => chapters.sort_by {|c| c.ended || Time.now }.reverse.map {|c| c.to_hash}
+      }
     end
 
   end
@@ -155,7 +166,17 @@ module Oughtve
   def self.show(parameters)
     tangent = tangent_for parameters
 
-    message = "*** #{tangent.name} ***"
+    case parameters.format
+    when :yaml
+      require "yaml"
+      return tangent.to_hash.to_yaml
+    when :json
+      require "json"
+      return tangent.to_hash.to_json
+    end
+
+    message = " #{tangent.name}\n"
+    message << ("=" * (tangent.name.length + 2)) << "\n"
 
     chapters = if parameters.old
                  tangent.chapters.sort_by {|chapter| chapter.ended || Time.now }.reverse
@@ -164,21 +185,24 @@ module Oughtve
                end
 
     chapters.each {|chapter|
-      message << "\n\n== #{chapter.summary}, closed at #{chapter.ended.strftime TimeFormat} ==" if chapter.summary
+      if chapter.summary
+        summary = "#{chapter.summary}, closed #{chapter.ended.strftime TimeFormat}"
+        message << "\n\n\n" << summary << "\n" << ("=" * (summary.length + 2)) << "\n"
+      end
 
       closed, open = chapter.verses.partition {|v| v.stricken }
 
-      # @todo Remove duplication here, unless different output..
-      message << "\n\n Open:\n"
+      # @todo Remove duplication here, unless output stays different..
+      message << "\n Open:\n-------\n"
       message <<  open.reverse.map {|v|
                     if parameters.verbose
-                      " - #{v.text} (##{v.id} #{v.time.strftime TimeFormat})"
+                      " * #{v.text} (##{v.id} #{v.time.strftime TimeFormat})"
                     else
-                      " - #{v.text}"
+                      " * #{v.text}"
                     end
                   }.join("\n")
 
-      message << "\n\n Closed:\n"
+      message << "\n\n Closed:\n---------\n"
       message <<  closed.reverse.map {|v|
                     if parameters.verbose
                       " * #{v.text} (##{v.id} #{v.time.strftime TimeFormat})"

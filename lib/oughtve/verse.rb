@@ -68,6 +68,16 @@ module Oughtve
     # We know nothing about no Tangents
     belongs_to  :chapter
 
+
+    #
+    # Hash representation of data.
+    #
+    def to_hash()
+      hash = {:text => text, :time => time}
+      hash[:closed] = stricken if stricken
+      hash
+    end
+
   end
 
 end
