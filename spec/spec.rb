@@ -14,6 +14,12 @@ dummy_dir = File.join specdir, "/dummy_home_dir_#{$$}"
 FileUtils.rm_r  dummy_dir, :secure => true  rescue nil
 
 
+# Raw output?
+raw = if ARGV.first == "--raw"
+        ARGV.shift
+        true
+      end
+
 # Split any files from options to pass to the spec program
 split = ARGV.index "--"
 
@@ -34,17 +40,38 @@ begin
   real_home = ENV['HOME']
   ENV['HOME'] = dummy_dir
 
+  start = Time.now
+  examples, fails = 0, 0
+
   files.each do |spec|
     FileUtils.mkdir dummy_dir
 
-    pid = fork {
-      puts "\n#{spec}:"
+    puts "\n#{spec}:"
 
-      exec "spec", opts, File.expand_path(spec)
-    }
+    if raw
+      pid = fork {
+        exec "spec", opts, File.expand_path(spec)
+      }
 
-    Process.waitpid pid
+      Process.waitpid pid
+    else
+      output = `spec #{opts} #{File.expand_path(spec)}`
+
+      stats = output.scan(/(\d+) examples?, (\d+) failures?/).first
+      examples += stats.first.to_i
+      fails += stats.last.to_i
+
+      puts output
+    end
+
     FileUtils.rm_r  dummy_dir, :secure => true rescue nil
+  end
+
+  unless raw
+    puts "\n\n========================\n"
+    puts "     Totals: #{fails}/#{examples}\n"
+    puts "     Time:   #{Time.now - start}s\n"
+    puts
   end
 
 ensure

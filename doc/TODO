@@ -14,3 +14,8 @@
 
 - Change the stupid names.
 
+- Allow changing the default path/name so that multiple binaries
+  could exist for shorthand.
+
+- Write some Tap tasks for specs &c.
+
