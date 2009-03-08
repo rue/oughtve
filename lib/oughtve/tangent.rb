@@ -221,14 +221,16 @@ module Oughtve
                     end
                   }.join("\n")
 
-      message << "\n\n Closed:\n---------\n"
-      message <<  closed.reverse.map {|v|
-                    if parameters.verbose
-                      " * #{v.text} (##{v.id} #{v.time.strftime TimeFormat})"
-                    else
-                      " * #{v.text}"
-                    end
-                  }.join("\n")
+      if parameters.all
+        message << "\n\n Closed:\n---------\n"
+        message <<  closed.reverse.map {|v|
+                      if parameters.verbose
+                        " * #{v.text} (##{v.id} #{v.time.strftime TimeFormat})"
+                      else
+                        " * #{v.text}"
+                      end
+                    }.join("\n")
+      end
     }
 
     message

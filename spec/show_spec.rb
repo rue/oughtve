@@ -106,6 +106,8 @@ describe Oughtve, "viewing notes" do
     outputs.shift.should =~ /Open/
     outputs.shift.should =~ /Hi Mike!/
     outputs.shift.should =~ /Hi bob!/
+
+    outputs.should be_empty
   end
 end
 
