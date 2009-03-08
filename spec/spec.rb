@@ -15,7 +15,7 @@ FileUtils.rm_r  dummy_dir, :secure => true  rescue nil
 
 
 # Split any files from options to pass to the spec program
-split = ARGV.index('--')
+split = ARGV.index "--"
 
 opts  = if split
           ARGV.slice!((split + 1)..-1).join ' '
