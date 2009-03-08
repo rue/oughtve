@@ -72,30 +72,10 @@ module Oughtve
       opts.banner = "Usage: #{$0} [--ACTION [OPTIONS]]"
 
       opts.separator ""
-      opts.separator "  Use `#{$0} --help ACTION` for more help."
-
-      opts.separator ""
       opts.separator "  Actions:"
 
 
       # Actions
-
-      opts.on "-b", "--bootstrap", "Set up database and initial structures." do
-        result.action! :bootstrap
-      end
-
-      opts.on "-c", "--chapter ENDNOTE", "Mark end of chapter and start new one." do |endnote|
-        result.action! :chapter
-        result.endnote = endnote
-      end
-
-      opts.on "-l", "--list", "Show defined Tangents and their base directories." do
-        result.action! :list
-      end
-
-      opts.on "-n", "--new", "Create new Tangent." do
-        result.action! :tangent
-      end
 
       opts.on "-s", "--scribe [TEXT]", "Enter a new note." do |text|
         result.action! :scribe
@@ -128,6 +108,28 @@ module Oughtve
             raise ArgumentError, "--show #{specifier} is not a valid option!" 
           end
         end
+      end
+
+      opts.on "-l", "--list", "Show defined Tangents and their base directories." do
+        result.action! :list
+      end
+
+      opts.on "-c", "--chapter ENDNOTE", "Mark end of chapter and start new one." do |endnote|
+        result.action! :chapter
+        result.endnote = endnote
+      end
+
+
+      # Options
+      opts.separator ""
+      opts.separator "  Maintenance Actions:"
+
+      opts.on "-b", "--bootstrap", "Set up database and initial structures." do
+        result.action! :bootstrap
+      end
+
+      opts.on "-n", "--new", "Create new Tangent." do
+        result.action! :tangent
       end
 
       opts.on "-D", "--delete [NAME]", "Delete tangent." do |name|
@@ -177,7 +179,7 @@ module Oughtve
 
       opts.on_tail "-h", "--help", "Display this message." do
         puts opts
-        exit
+        exit!
       end
 
       opts.on_tail "-V", "--version", "Display Oughtve version" do
@@ -185,11 +187,16 @@ module Oughtve
         puts "        Oughtve version #{Oughtve::VERSION.join(".")}."
         puts "Copyright (c) 2006-2009 Eero Saynatkari."
         puts
-        exit
+        exit!
       end
 
     end.parse! arguments
 
+  rescue OptionParser::InvalidOption => e
+    $stderr.print "\n#{e.message}\n\n"
+    parse_from %w[ -h ]
+
+  else
     result.rest = arguments
     result.action = :scribe unless result.action
     result

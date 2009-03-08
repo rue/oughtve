@@ -48,5 +48,12 @@
 # Yeah, so we are not really doing much.. there _could_ be a UI here.
 require "oughtve"
 
-puts Oughtve.run(ARGV)
+begin
+
+  puts Oughtve.run(ARGV)
+
+rescue Exception => e
+  puts e.message
+  puts e.backtrace.join("\n") if $VERBOSE
+end
 
