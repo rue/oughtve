@@ -122,9 +122,16 @@ module Oughtve
   #
   # Enter a new Verse.
   #
+  # Text may be given with or without --text option, or
+  # read from $stdin if no other text is found.
+  #
   def self.scribe(parameters)
     text = parameters.text || ""
     text << " " << parameters.rest.join(" ") unless parameters.rest.empty?
+
+    if text.empty?
+      text = $stdin.read.chomp
+    end
 
     raise ArgumentError, "No note!" if text.empty?
 

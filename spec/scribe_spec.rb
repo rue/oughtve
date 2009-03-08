@@ -1,5 +1,8 @@
 require File.join File.dirname(__FILE__), "spec_helper"
 
+require "stringio"
+
+
 describe Oughtve, "scribing a new note with Tangent specified" do
 
   before :each do
@@ -84,6 +87,8 @@ describe Oughtve, "scribing a new note" do
     Oughtve::Verse.all.each {|t| t.destroy }
     Oughtve::Chapter.all.each {|t| t.destroy }
     Oughtve::Tangent.all(:dir.not => "/").each {|t| t.destroy }
+
+    $stdin = STDIN
   end
 
   it "stores the time the note was created" do
@@ -112,7 +117,19 @@ describe Oughtve, "scribing a new note" do
     verses.first.text.should == "Aha there"
   end
 
-  it "raises an error if no message is given" do
+  it "will read standard input if no text is given" do
+    $stdin = StringIO.new "Moo, this is standard\ninput!\n\nReally!\n"
+
+    Oughtve.run %w[ --scribe ]
+
+    verses = Oughtve::Tangent.first(:name => "scriby").current_chapter.verses
+    verses.size.should == 1
+    verses.first.text.should == "Moo, this is standard\ninput!\n\nReally!"
+  end
+
+  it "raises an error if no message is given even in standard input" do
+    $stdin = StringIO.new ""
+
     lambda { Oughtve.run %w[ --scribe --tangent scriby ] }.should raise_error
   end
 
