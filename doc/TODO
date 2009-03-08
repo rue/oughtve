@@ -1,0 +1,16 @@
+ To Do
+=======
+
+- Improve command parser. Running out of letters. Complicated.
+  Maybe just subparsers for each action.
+
+- Improve synch or "feed" capabilities through the JSON or YAML
+  output, probably initially by including the IDs although just
+  the timestamp may be enough anyway.
+
+- Separate into entry, view, manage scripts.
+
+- Delete orphaned Chapters and Verses.
+
+- Change the stupid names.
+
