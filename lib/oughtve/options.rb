@@ -46,6 +46,8 @@
 require "optparse"
 require "ostruct"
 
+
+# Project
 require "oughtve/version"
 
 
@@ -109,7 +111,7 @@ module Oughtve
 
         if id_or_regexp
           begin
-            result.serial = Integer id_or_regexp
+            result.serial = Integer(id_or_regexp)
           rescue TypeError
             result.regexp = /#{Regexp.escape id_or_regexp}/
           end
@@ -155,7 +157,7 @@ module Oughtve
 
       opts.on_tail "-V", "--version", "Display Oughtve version" do
         puts
-        puts "         Oughtve version #{Oughtve::VERSION.join(".")}."
+        puts "        Oughtve version #{Oughtve::VERSION.join(".")}."
         puts "Copyright (c) 2006-2009 Eero Saynatkari."
         puts
         exit

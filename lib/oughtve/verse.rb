@@ -43,9 +43,12 @@
 #   Authors are not responsible for any damages, direct or indirect.
 #
 
+
 module Oughtve
 
-
+  #
+  # A Verse is a single note or entry.
+  #
   class Verse
     include DataMapper::Resource
 

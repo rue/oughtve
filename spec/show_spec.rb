@@ -1,6 +1,6 @@
 require File.join File.dirname(__FILE__), "spec_helper"
 
-describe Oughtve, "listing notes given a tangent name" do
+describe Oughtve, "viewing notes given a tangent name" do
 
   before :each do
     Oughtve.run %w[ --new --tangent tangy --directory /tmp ]
@@ -20,7 +20,7 @@ describe Oughtve, "listing notes given a tangent name" do
   end
 end
 
-describe Oughtve, "listing notes without output options" do
+describe Oughtve, "viewing notes without output options" do
 
   before :each do
     Oughtve.run %w[ --new --tangent tangy --directory /tmp ]
@@ -43,7 +43,7 @@ describe Oughtve, "listing notes without output options" do
 
 end
 
-describe Oughtve, "listing notes with --verbose" do
+describe Oughtve, "viewing notes with --verbose" do
 
   before :each do
     Oughtve.run %w[ --new --tangent tangy --directory /tmp ]
@@ -62,19 +62,19 @@ describe Oughtve, "listing notes with --verbose" do
 
     outputs[0].should =~ /Hi bob!/
     outputs[0].should =~ /##{verses[0].id}/
-    Time.parse(outputs[0].match(/\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d/)[0]).to_i.should == verses[0].time.to_i
+    Time.parse(outputs[0].match(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/)[0]).to_i.should == verses[0].time.to_i
 
     outputs[1].should =~ /Hi Mike!/
     outputs[1].should =~ /##{verses[1].id}/
-    Time.parse(outputs[1].match(/\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d/)[0]).to_i.should == verses[1].time.to_i
+    Time.parse(outputs[1].match(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/)[0]).to_i.should == verses[1].time.to_i
 
     outputs[2].should =~ /Hi james!/
     outputs[2].should =~ /##{verses[2].id}/
-    Time.parse(outputs[2].match(/\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d/)[0]).to_i.should == verses[2].time.to_i
+    Time.parse(outputs[2].match(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/)[0]).to_i.should == verses[2].time.to_i
   end
 end
 
-describe Oughtve, "listing notes" do
+describe Oughtve, "viewing notes" do
 
   before :each do
     Oughtve.run %w[ --new --tangent tangy --directory /tmp ]

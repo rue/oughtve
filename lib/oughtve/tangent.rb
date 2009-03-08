@@ -53,6 +53,9 @@ module Oughtve
   #
   # Tangents are directory-based groupings of notes.
   #
+  # Most of the work occurs here. Chapters and Verses
+  # are mere extras on this stage.
+  #
   class Tangent
     include DataMapper::Resource
 
@@ -148,7 +151,7 @@ module Oughtve
   def self.show(parameters)
     tangent = tangent_for parameters
 
-    to_show = tangent.current_chapter.verses.reject {|v| v.stricken}
+    to_show = tangent.current_chapter.verses.reject {|v| v.stricken }
 
     to_show.map {|v|
       if parameters.verbose

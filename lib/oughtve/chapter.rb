@@ -50,6 +50,9 @@ module Oughtve
   class Tangent; end
 
 
+  #
+  # A Chapter is a (hopefully) logical section of a Tangent.
+  #
   class Chapter
     include DataMapper::Resource
 
