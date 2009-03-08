@@ -200,6 +200,27 @@ module Oughtve
   # Create a new Tangent.
   #
   def self.tangent(parameters)
+    dir = File.expand_path(parameters.dir) rescue Dir.pwd
+
+    tangent = tangent_for parameters, :check_path_too
+
+    if tangent
+      if tangent.name == parameters.name
+        raise ArgumentError, "Tangent `#{tangent.name}' already exists at #{tangent.dir}"
+      end
+
+      # Relationship with existing tangent?
+      case dir <=> tangent.dir
+      when -1
+        # @todo Is this a necessary warning? Verbose only maybe? --rue
+        warn "One or more existing tangents live below the new one (at least #{tangent.dir})"
+      when 0
+        raise ArgumentError, "#{tangent.dir} is already bound to `#{tangent.name}'!"
+      else
+        # Does not matter if it is a subdirectory
+      end
+    end
+
     tangent = Tangent.new
 
     tangent.dir = File.expand_path(parameters.dir) rescue Dir.pwd

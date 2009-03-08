@@ -44,7 +44,7 @@
 #
 
 require "rubygems"
-require "dm-core"
+  require "dm-core"
 
 require "oughtve/tangent"
 require "oughtve/chapter"
