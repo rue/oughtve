@@ -35,11 +35,13 @@ describe Oughtve, "viewing notes without output options" do
 
   it "produces a string containing text for all open notes for tangent" do
     outputs = Oughtve.run(%w[ --show --tangent tangy ]).split "\n"
+    outputs.reject! {|line| line.nil? or line.empty? }
 
-    outputs[0].should =~ /tangy/
-    outputs[1].should =~ /Hi bob!/
-    outputs[2].should =~ /Hi Mike!/
-    outputs[3].should =~ /Hi james!/
+    outputs.shift.should =~ /tangy/
+    outputs.shift.should =~ /Open/
+    outputs.shift.should =~ /Hi james!/
+    outputs.shift.should =~ /Hi Mike!/
+    outputs.shift.should =~ /Hi bob!/
   end
 
 end
@@ -59,21 +61,26 @@ describe Oughtve, "viewing notes with --verbose" do
 
   it "includes time when note was scribed" do
     outputs = Oughtve.run(%w[ --show --tangent tangy --verbose ]).split "\n"
-    verses = Oughtve::Tangent.first(:name.eql => "tangy").current_chapter.verses
+    outputs.reject! {|line| line.nil? or line.empty? }
+    verses = Oughtve::Tangent.first(:name.eql => "tangy").current_chapter.verses.reverse
 
-    outputs[0].should =~ /tangy/
+    outputs.shift.should =~ /tangy/
+    outputs.shift.should =~ /Open/
 
-    outputs[1].should =~ /Hi bob!/
-    outputs[1].should =~ /##{verses[0].id}/
-    Time.parse(outputs[1].match(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/)[0]).to_i.should == verses[0].time.to_i
+    output = outputs.shift
+    output.should =~ /Hi james!/
+    output.should =~ /##{verses[0].id}/
+    Time.parse(output.match(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/)[0]).to_i.should == verses[0].time.to_i
 
-    outputs[2].should =~ /Hi Mike!/
-    outputs[2].should =~ /##{verses[1].id}/
-    Time.parse(outputs[2].match(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/)[0]).to_i.should == verses[1].time.to_i
+    output = outputs.shift
+    output.should =~ /Hi Mike!/
+    output.should =~ /##{verses[1].id}/
+    Time.parse(output.match(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/)[0]).to_i.should == verses[1].time.to_i
 
-    outputs[3].should =~ /Hi james!/
-    outputs[3].should =~ /##{verses[2].id}/
-    Time.parse(outputs[3].match(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/)[0]).to_i.should == verses[2].time.to_i
+    output = outputs.shift
+    output.should =~ /Hi bob!/
+    output.should =~ /##{verses[2].id}/
+    Time.parse(output.match(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/)[0]).to_i.should == verses[2].time.to_i
   end
 end
 
@@ -93,11 +100,92 @@ describe Oughtve, "viewing notes" do
 
   it "does not show stricken notes" do
     outputs = Oughtve.run(%w[ --show --tangent tangy ]).split "\n"
+    outputs.reject! {|line| line.nil? or line.empty? }
 
-    outputs.size.should == 3
-
-    outputs[0].should =~ /tangy/
-    outputs[1].should =~ /Hi bob!/
-    outputs[2].should =~ /Hi Mike!/
+    outputs.shift.should =~ /tangy/
+    outputs.shift.should =~ /Open/
+    outputs.shift.should =~ /Hi Mike!/
+    outputs.shift.should =~ /Hi bob!/
   end
 end
+
+describe Oughtve, "viewing both stricken and open notes with all" do
+  before :each do
+    Oughtve.run %w[ --new --tangent tangy --directory /tmp ]
+    Oughtve.run %w[ --scribe --tangent tangy Hi bob! ]
+    Oughtve.run %w[ --scribe --tangent tangy Hi Mike! ]
+    Oughtve.run %w[ --scribe --tangent tangy Hi james! ]
+    Oughtve.run %w[ --strike --tangent tangy --match Hi\ M ]
+  end
+
+  after :each do
+    Oughtve::Tangent.all(:name.not => "default").each {|t| t.destroy }
+  end
+
+  it "shows stricken notes" do
+    outputs = Oughtve.run(%w[ --show all --tangent tangy ]).split "\n"
+    outputs.reject! {|line| line.nil? or line.empty? }
+
+    outputs.shift.should =~ /tangy/
+    outputs.shift.should =~ /Open/
+
+    outputs.shift.should =~ /Hi james!/
+    outputs.shift.should =~ /Hi bob!/
+
+    outputs.shift.should =~ /Closed/
+    outputs.shift.should =~ /Hi Mike!/
+  end
+end
+
+describe Oughtve, "viewing every note for a tangent form current and previous chapters with everything" do
+  before :each do
+    Oughtve.run %w[ --new --tangent tangy --directory /tmp ]
+    Oughtve.run %w[ --scribe --tangent tangy Hi bob! ]
+    Oughtve.run %w[ --scribe --tangent tangy Hi Mike! ]
+    Oughtve.run %w[ --scribe --tangent tangy Hi james! ]
+    Oughtve.run %w[ --strike --tangent tangy --match Hi\ M ]
+    Oughtve.run %w[ --chapter End of part 1 --tangent tangy ]
+    Oughtve.run %w[ --scribe --tangent tangy Hi Mo! ]
+    Oughtve.run %w[ --scribe --tangent tangy Hi Bo! ]
+    Oughtve.run %w[ --strike --tangent tangy --match Hi\ B ]
+    Oughtve.run %w[ --chapter End of part 2 --tangent tangy ]
+    Oughtve.run %w[ --scribe --tangent tangy Hi go! ]
+    Oughtve.run %w[ --scribe --tangent tangy Hi lo! ]
+    Oughtve.run %w[ --strike --tangent tangy --match Hi\ l ]
+  end
+
+  after :each do
+    Oughtve::Tangent.all(:name.not => "default").each {|t| t.destroy }
+  end
+
+  it "shows all notes from this and previous chapters" do
+    outputs = Oughtve.run(%w[ --show old --tangent tangy ]).split "\n"
+    outputs.reject! {|line| line.nil? or line.empty? }
+
+    outputs.shift.should =~ /tangy/
+
+    outputs.shift.should =~ /Open/
+    outputs.shift.should =~ /Hi go!/
+
+    outputs.shift.should =~ /Closed/
+    outputs.shift.should =~ /Hi lo!/
+
+    outputs.shift.should =~ /End of part 2/
+
+    outputs.shift.should =~ /Open/
+    outputs.shift.should =~ /Hi Mo!/
+
+    outputs.shift.should =~ /Closed/
+    outputs.shift.should =~ /Hi Bo!/
+
+    outputs.shift.should =~ /End of part 1/
+
+    outputs.shift.should =~ /Open/
+    outputs.shift.should =~ /Hi james!/
+    outputs.shift.should =~ /Hi bob!/
+
+    outputs.shift.should =~ /Closed/
+    outputs.shift.should =~ /Hi Mike!/
+  end
+end
+
