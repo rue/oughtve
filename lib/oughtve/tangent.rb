@@ -136,14 +136,14 @@ module Oughtve
 
     if text.empty?
       $stdout.puts "Reading for `#{tangent.name}' from standard input, terminate with ^D."
-      text = $stdin.read.chomp
+      text = $stdin.read
     end
 
     raise ArgumentError, "No note!" if text.empty?
 
-    tangent.current_chapter.verses.build(:text => text, :time => parameters.time).save
+    tangent.current_chapter.verses.build(:text => text.strip, :time => parameters.time).save
 
-    "So noted (in \"#{tangent.name}\".)"
+    "So noted in \"#{tangent.name}\"."
   end
 
 
