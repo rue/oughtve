@@ -129,16 +129,18 @@ module Oughtve
   # read from $stdin if no other text is found.
   #
   def self.scribe(parameters)
+    tangent = tangent_for parameters
+
     text = parameters.text || ""
     text << " " << parameters.rest.join(" ") unless parameters.rest.empty?
 
     if text.empty?
+      $stdout.puts "Reading for `#{tangent.name}' from standard input, terminate with ^D."
       text = $stdin.read.chomp
     end
 
     raise ArgumentError, "No note!" if text.empty?
 
-    tangent = tangent_for parameters
     tangent.current_chapter.verses.build(:text => text, :time => parameters.time).save
 
     "So noted (in \"#{tangent.name}\".)"
@@ -154,7 +156,7 @@ module Oughtve
     to_show = tangent.current_chapter.verses.reject {|v| v.stricken }
 
     message = "#{tangent.name}:\n"
-    
+
     message <<  to_show.map {|v|
                   if parameters.verbose
                     " - #{v.text} (##{v.id} #{v.time.strftime TimeFormat})"
