@@ -82,8 +82,21 @@ end
 
 describe Oughtve, "creating a new Tangent" do
 
+  before :all do
+    @dummyroot = "/tmp/oughtve_tangent_spec_#{$$}_#{Time.now.to_i}"
+    @dummyhigher = File.join @dummyroot, "first"
+    @dummylower = File.join @dummyhigher, "second"
+
+    FileUtils.mkdir_p @dummylower
+  end
+
   after :each do
     Oughtve::Tangent.all(:dir.not => "/").each {|t| t.destroy }
+    $stderr = STDERR
+  end
+
+  after :all do
+    FileUtils.rm_r @dummyroot, :secure => true
   end
 
   it "uses current directory as the path if none is supplied" do
@@ -98,31 +111,88 @@ describe Oughtve, "creating a new Tangent" do
   end
 
   it "raises if a Tangent already exists for this exact path" do
-    fail
+    Oughtve.run %w[ --new --tangent hi ]
+
+    tangents = Oughtve::Tangent.all :dir.not => "/"
+    tangents.size.should == 1
+    tangents.first.dir.should == Dir.pwd
+    tangents.first.name.should == "hi"
+
+    lambda { Oughtve.run %w[ --new --tangent hola ] }.should raise_error
   end
 
   it "raises if a Tangent already exists with the same name" do
-    fail
+    Oughtve.run %w[ --new --tangent hi --directory /tmp ]
+
+    tangents = Oughtve::Tangent.all :dir.not => "/"
+    tangents.size.should == 1
+    tangents.first.dir.should == "/tmp"
+    tangents.first.name.should == "hi"
+
+    lambda { Oughtve.run %w[ --new --tangent hi ] }.should raise_error
   end
 
   it "can create a new Tangent below an existing one in the file hierarchy" do
-    fail
+    Oughtve.run %W[ --new --tangent hi --directory #{@dummyhigher} ]
+
+    tangents = Oughtve::Tangent.all :dir.not => "/"
+    tangents.size.should == 1
+    tangents.first.dir.should == @dummyhigher
+    tangents.first.name.should == "hi"
+
+    Oughtve.run %W[ --new --tangent ho --directory #{@dummylower} ]
+
+    tangents = Oughtve::Tangent.all :dir.not => "/"
+    tangents.size.should == 2
+
+    tangents.first.dir.should == @dummyhigher
+    tangents.first.name.should == "hi"
+
+    tangents.last.dir.should == @dummylower
+    tangents.last.name.should == "ho"
   end
 
   it "can create a new Tangent above an existing one in the file hierarchy" do
-    fail
+    Oughtve.run %W[ --new --tangent hi --directory #{@dummylower} ]
+
+    tangents = Oughtve::Tangent.all :dir.not => "/"
+    tangents.size.should == 1
+    tangents.first.dir.should == @dummylower
+    tangents.first.name.should == "hi"
+
+    Oughtve.run %W[ --new --tangent ho --directory #{@dummyhigher} ]
+
+    tangents = Oughtve::Tangent.all :dir.not => "/"
+    tangents.size.should == 2
+
+    tangents.first.dir.should == @dummylower
+    tangents.first.name.should == "hi"
+
+    tangents.last.dir.should == @dummyhigher
+    tangents.last.name.should == "ho"
   end
 
   it "prints a warning if new Tangent being created above existing one" do
-    fail
+    $stdout = StringIO.new
+
+    Oughtve.run %W[ --new --tangent hi --directory #{@dummylower} ]
+
+    tangents = Oughtve::Tangent.all :dir.not => "/"
+    tangents.size.should == 1
+
+    Oughtve.run %W[ --new --tangent ho --directory #{@dummyhigher} ]
+
+    tangents = Oughtve::Tangent.all :dir.not => "/"
+    tangents.size.should == 2
+
+    $stdout.read.chomp.should =~ /above/
   end
 
+  # @todo This is expected to fail because RSpec sucks. --rue
   it "raises an error if the path does not exist in the filesystem" do
-    fail
-  end
-
-  it "raises an error if the --path or --name flag is supplied without an argument" do
-    fail
+    nonesuch = "/foobar/#{$$}/#{Time.now.to_i}/#{rand 100}"
+    File.exist?(nonesuch).should == false
+    lambda { Oughtve.run %W[ --new --tangent hi --directory #{nonesuch} ] }.should raise_error
   end
 
   it "creates the initial Chapter associated with the Tangent" do
