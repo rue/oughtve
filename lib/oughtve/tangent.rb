@@ -129,7 +129,9 @@ module Oughtve
   # Show all open defined Tangents and their base directories.
   #
   def self.list(*)
-    "Defined tangents:\n" << Tangent.all.map {|t| " - #{t.name} (#{t.dir})" }.join("\n")
+    " Defined tangents:\n" <<
+    "===================\n" <<
+    Tangent.all.map {|t| " * #{t.name} (#{t.dir})" }.join("\n")
   end
 
 

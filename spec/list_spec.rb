@@ -9,15 +9,17 @@ describe Oughtve, "listing defined tangents" do
   it "shows name and base directory of each tangent in the system" do
     outputs = Oughtve.run(%w[ --list ]).split "\n"
 
-    outputs.size.should == 3
-
     # First line is a banner
+    outputs.shift
+    outputs.shift
 
-    outputs[1].should =~ /default/
-    outputs[1].should =~ /\//
+    line = outputs.shift
+    line.should =~ /default/
+    line.should =~ /\//
 
-    outputs[2].should =~ /tangy/
-    outputs[2].should =~ /\/tmp/
+    line = outputs.shift
+    line.should =~ /tangy/
+    line.should =~ /\/tmp/
   end
 
 end
