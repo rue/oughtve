@@ -128,13 +128,13 @@ module Oughtve
         result.action! :bootstrap
       end
 
-      opts.on "-n", "--new", "Create new Tangent." do
+      opts.on "-n", "--new", "Create new Tangent. (Use -t to give it a name.)" do
         result.action! :tangent
       end
 
-      opts.on "-D", "--delete [NAME]", "Delete tangent." do |name|
+      opts.on "-D", "--delete NAME", "Delete tangent." do |name|
         result.action! :delete
-        result.name = name if name
+        result.name = name
       end
 
 
