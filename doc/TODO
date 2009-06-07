@@ -19,3 +19,9 @@
 
 - Write some Tap tasks for specs &c.
 
+- Considering subsections per directory or allowing more than one
+  tangent per dir (requiring name to be given), but I think it leads
+  to overcomplicating things.
+
+- Some kind of tagging? Same overcomplicating issue.
+
