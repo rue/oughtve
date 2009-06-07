@@ -53,7 +53,10 @@ begin
   puts Oughtve.run(ARGV)
 
 rescue Exception => e
-  puts e.message
-  puts e.backtrace.join("\n") if $VERBOSE
+  $stderr.puts e.message
+  $stderr.puts e.backtrace.join("\n") if $VERBOSE
+
+  $stderr.puts "Did you run --bootstrap?" if e.message =~ /database/i
+  $stderr.puts "Try #{File.basename $0} --help"
 end
 
