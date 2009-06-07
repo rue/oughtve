@@ -64,9 +64,10 @@ we can do this in your home directory (you could use that
 group as a personal to-do list, for example):
 
     $ cd ~
-    $ oughtve --new Personal
+    $ oughtve --new --tangent Personal
 
-And there you go.
+And there you go. The --tangent option is used here to *give*
+the name, and can later be used to refer to a name.
 
 
  Which Group Goes Where?
