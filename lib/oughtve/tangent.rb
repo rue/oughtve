@@ -212,7 +212,7 @@ module Oughtve
         message << "\n\n\n" << summary << "\n" << ("=" * (summary.length + 2)) << "\n"
       end
 
-      closed, open = chapter.verses.partition {|v| v.stricken }
+      closed, open = chapter.verses.partition {|v| v.struck }
 
       # @todo Remove duplication here, unless output stays different..
       message << "\n Open:\n-------\n"
@@ -264,9 +264,9 @@ module Oughtve
               candidates.first
             end
 
-    raise ArgumentError, "Already stricken: #{parameters.serial}" if verse.stricken
+    raise ArgumentError, "Already struck out: #{parameters.serial}" if verse.struck
 
-    verse.stricken = parameters.time
+    verse.struck = parameters.time
     verse.save
 
     "\"#{verse.text[0..20]}...\" has been stricken."

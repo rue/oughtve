@@ -62,7 +62,7 @@ module Oughtve
     property    :text,      Text,     :nullable => false
 
     # Whether struck out (done) and time of occurrence if so
-    property    :stricken,  Time,     :default  => nil
+    property    :struck,    Time,     :default  => nil
 
 
     # We know nothing about no Tangents
@@ -74,7 +74,7 @@ module Oughtve
     #
     def to_hash()
       hash = {:text => text, :time => time}
-      hash[:closed] = stricken if stricken
+      hash[:closed] = struck if struck
       hash
     end
 

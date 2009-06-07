@@ -74,7 +74,7 @@ module Oughtve
     # Hash representation of data, including all verses.
     #
     def to_hash()
-      closed, open = verses.partition {|verse| verse.stricken }
+      closed, open = verses.partition {|verse| verse.struck }
       hash = {:open => open.map {|v| v.to_hash },
               :closed => closed.map {|v| v.to_hash }
              }
