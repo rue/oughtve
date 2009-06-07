@@ -102,6 +102,6 @@ get yourself a tarball of the source.
 -----------------------
 
 * oughtve MEOW projects _purr_ kittensoft _rawr_ org.
-* #oughtve on Freenode ("rue", in case I am not the only
-  other person on the channel.)
+* IRC channel #oughtve on Freenode ("rue", in case I
+  am not the only other person on the channel.)
 
