@@ -1,0 +1,130 @@
+ Using Oughtve
+===============
+
+ Installing
+------------
+
+From the root of the source:
+
+    $ sudo ruby setup.rb
+
+This installs libraries in the normal site_ruby and the
+script in the normal bindir. You can naturally change
+the options, see here:
+
+    $ ruby setup.rb --help
+
+
+ Getting Started
+-----------------
+
+I personally like to create a symlink to "--" as the script
+name, which makes jotting notes that much easier. By default,
+the script is just called "oughtve".
+
+First, create your database. Everything is stored in the same
+place:
+
+    $ oughtve --bootstrap
+
+This sets up the DB in ~/.oughtve and creates a default
+group or "tangent" bound at /, so it catches everything.
+
+
+ Write a Note
+--------------
+
+You can try this anywhere in your filesystem, all notes will
+end up in your default group:
+
+    $ oughtve My first note!
+    $ cd /tmp
+    $ oughtve Another one!
+    $ cd back/wherever
+
+Go ahead, make some.
+
+
+ Viewing Notes
+---------------
+
+Did it actually take? Let us find out:
+
+    $ oughtve --show
+
+This should give you the notes you have entered thus far,
+all safely in the default group.
+
+
+ Another Group!
+----------------
+
+OK, time to make a group. For the purposes of this exercise,
+we can do this in your home directory (you could use that
+group as a personal to-do list, for example):
+
+    $ cd ~
+    $ oughtve --new Personal
+
+And there you go.
+
+
+ Which Group Goes Where?
+-------------------------
+
+To easily see which groups you have defined and where they
+live:
+
+    $ oughtve --list
+
+
+ Try it Out
+------------
+
+With the new group defined, anything under your home directory
+should be getting stored there rather than default:
+
+    $ cd ~
+    $ oughtve First personal note!
+    $ oughtve --show
+
+You should only see the one new note. You can add some more
+from subdirectories of ~, if you like. Then, hop above the
+tree:
+
+    $ cd ~/..
+    $ oughtve --show
+
+This should show you the old default notes. Adding one works
+too:
+
+    $ oughtve Here we are in the default group again.
+    $ oughtve --show
+
+
+ Going Outside the Box
+-----------------------
+
+You can actually address any group explicitly from anywhere
+in the system, even if it would normally be under some other
+group:
+
+    $ cd ~
+    $ oughtve --show --tangent default
+
+Default notes! You can give the --tangent switch to pretty
+much any command to force a specific group, or "tangent",
+to be used. Alternately, you could give the --directory
+switch  but it is mostly useful only when creating new ones.
+
+
+ Then What?
+------------
+
+You can ask oughtve to tell you what it can do to find more
+functionality until such time that I (or you!) write some
+more documentation:
+
+    $ oughtve --help
+
+
