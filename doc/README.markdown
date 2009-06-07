@@ -71,13 +71,13 @@ following to enter a note:
  Requirements
 --------------
 
-Gems:
-  * dm-core
-  * data_objects
-  * do_sqlite3
+* Gems
+** dm-core
+** data_objects
+** do_sqlite3
 
-Other:
-  * UNIXy system.
+* Other
+** UNIXy system.
 
 
  Status
