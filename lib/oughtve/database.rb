@@ -67,7 +67,6 @@ module Oughtve
     #
     def self.connect()
       DataMapper.setup :default, URI
-#      DataMapper::Logger.new STDOUT, :debug
     end
 
     #
