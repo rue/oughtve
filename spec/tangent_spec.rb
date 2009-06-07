@@ -172,8 +172,10 @@ describe Oughtve, "creating a new Tangent" do
     tangents.last.name.should == "ho"
   end
 
+  # TODO: This will quite likely fail because RSpec sucks.
   it "prints a warning if new Tangent being created above existing one" do
     $stdout = StringIO.new
+    $stderr = StringIO.new
 
     Oughtve.run %W[ --new --tangent hi --directory #{@dummylower} ]
 
@@ -185,7 +187,10 @@ describe Oughtve, "creating a new Tangent" do
     tangents = Oughtve::Tangent.all :dir.not => "/"
     tangents.size.should == 2
 
-    $stdout.read.chomp.should =~ /above/
+    out = $stdout.read.chomp
+    err = $stderr.read.chomp
+
+    [out, err].any? {|str| str =~ /above/ }.should == true
   end
 
   # @todo This is expected to fail because RSpec sucks. --rue
