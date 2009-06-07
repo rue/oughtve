@@ -106,7 +106,7 @@ describe Oughtve, "scribing a new note" do
     Oughtve.run %w[ --scribe --text Moo\ there ]
 
     tangent = Oughtve::Tangent.first :name => "scriby"
-    (!!tangent.current_chapter.verses.first.stricken).should_not == true
+    (!!tangent.current_chapter.verses.first.struck).should_not == true
   end
 
   it "assumes any straggling nonoption parameters are a part of the text" do

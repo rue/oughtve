@@ -16,7 +16,7 @@ describe Oughtve, "marking notes done or closed with --strike using the note's I
   it "it sets the 'stricken' field to the time stricken" do
     verse = Oughtve::Tangent.first(:name.eql => "tangy").current_chapter.verses.last
 
-    (!!verse.stricken).should == false
+    (!!verse.struck).should == false
 
     before = Time.now
     Oughtve.run "--strike --id #{verse.id}".split(" ")
@@ -24,7 +24,7 @@ describe Oughtve, "marking notes done or closed with --strike using the note's I
 
     verse = Oughtve::Tangent.first(:name.eql => "tangy").current_chapter.verses.last
 
-    (before..after).should include(verse.stricken)
+    (before..after).should include(verse.struck)
   end
 
   it "raises if the ID does not exist" do
@@ -49,7 +49,7 @@ describe Oughtve, "marking notes done or closed with --strike using text matchin
   it "sets the stricken field if given text is an unambiguous regexp match to an open note in current tangent" do
     verse = Oughtve::Tangent.first(:name.eql => "tangy").current_chapter.verses.last
 
-    (!!verse.stricken).should == false
+    (!!verse.struck).should == false
 
     before = Time.now
     Oughtve.run %w[--strike --tangent tangy --match Hi\ j ]
@@ -57,7 +57,7 @@ describe Oughtve, "marking notes done or closed with --strike using text matchin
 
     verse = Oughtve::Tangent.first(:name.eql => "tangy").current_chapter.verses.last
 
-    (before..after).should include(verse.stricken)
+    (before..after).should include(verse.struck)
   end
 
   it "raises if Note cannot be matched" do
@@ -90,7 +90,7 @@ describe Oughtve, "striking notes with parameter directly to --strike" do
   it "uses parameter as Integer when possible" do
     verse = Oughtve::Tangent.first(:name.eql => "tangy").current_chapter.verses.last
 
-    (!!verse.stricken).should == false
+    (!!verse.struck).should == false
 
     before = Time.now
     Oughtve.run %W[--strike #{verse.id} --tangent tangy ]
@@ -98,13 +98,13 @@ describe Oughtve, "striking notes with parameter directly to --strike" do
 
     verse = Oughtve::Tangent.first(:name.eql => "tangy").current_chapter.verses.last
 
-    (before..after).should include(verse.stricken)
+    (before..after).should include(verse.struck)
   end
 
   it "uses parameter as regular expression if it is not an Integer" do
     verse = Oughtve::Tangent.first(:name.eql => "tangy").current_chapter.verses.last
 
-    (!!verse.stricken).should == false
+    (!!verse.struck).should == false
 
     before = Time.now
     Oughtve.run %w[ --strike Hi\ j --tangent tangy ]
@@ -112,7 +112,7 @@ describe Oughtve, "striking notes with parameter directly to --strike" do
 
     verse = Oughtve::Tangent.first(:name.eql => "tangy").current_chapter.verses.last
 
-    (before..after).should include(verse.stricken)
+    (before..after).should include(verse.struck)
   end
 
 end
@@ -133,7 +133,7 @@ describe Oughtve, "marking notes done or closed with --strike" do
   it "raises if note already stricken" do
     verse = Oughtve::Tangent.first(:name.eql => "tangy").current_chapter.verses.last
 
-    (!!verse.stricken).should == false
+    (!!verse.struck).should == false
 
     before = Time.now
     Oughtve.run %w[--strike --tangent tangy --match Hi\ j ]
@@ -141,7 +141,7 @@ describe Oughtve, "marking notes done or closed with --strike" do
 
     verse = Oughtve::Tangent.first(:name.eql => "tangy").current_chapter.verses.last
 
-    (before..after).should include(verse.stricken)
+    (before..after).should include(verse.struck)
 
     lambda { Oughtve.run %w[ --strike --tangent tangy --match Hi\ j ] }.should raise_error
   end
