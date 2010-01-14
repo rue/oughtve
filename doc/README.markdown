@@ -93,9 +93,9 @@ Please break it. 'Some' robustness is needed.
  Where?
 --------
 
-Only at [Github](http://github.com/rue/oughtve). Instead of
-using Git, if you prefer, you may use the download link to
-get yourself a tarball of the source.
+    $ gem install oughtve
+
+Source is found on [Github](http://github.com/rue/oughtve).
 
 
  Who Do I Complain To?

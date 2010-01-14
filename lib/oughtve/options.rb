@@ -10,7 +10,7 @@
 #  Copyright
 # -----------
 #
-#   Copyright (c) 2006-2009 Eero Saynatkari, all rights reserved.
+#   Copyright (c) 2006-2010 Eero Saynatkari, all rights reserved.
 #
 #
 #  Licence
@@ -185,7 +185,7 @@ module Oughtve
       opts.on_tail "-V", "--version", "Display Oughtve version" do
         puts
         puts "        Oughtve version #{Oughtve::VERSION.join(".")}."
-        puts "Copyright (c) 2006-2009 Eero Saynatkari."
+        puts "Copyright (c) 2006-2010 Eero Saynatkari."
         puts
         exit!
       end
