@@ -107,10 +107,10 @@ module Oughtve
     previous.ended = parameters.time
     previous.save
 
-    chapter = tangent.chapters.build
-    chapter.save
-
+    chapter = tangent.chapters.new
     tangent.current_chapter = chapter
+
+    chapter.save
     tangent.save
 
     "Chapter of \"#{tangent.name}\" finished."
@@ -166,7 +166,7 @@ module Oughtve
 
     raise ArgumentError, "No note!" if text.empty?
 
-    tangent.current_chapter.verses.build(:text => text.strip, :time => parameters.time).save
+    tangent.current_chapter.verses.new(:text => text.strip, :time => parameters.time).save
 
     "So noted in \"#{tangent.name}\"."
   end
@@ -297,11 +297,11 @@ module Oughtve
 
     tangent.name = parameters.name || tangent.dir
 
-    chapter = tangent.chapters.build
-    chapter.save
-
+    chapter = tangent.chapters.new
     tangent.current_chapter = chapter
+
     tangent.save
+    chapter.save
 
     "Created #{tangent.name} at #{tangent.dir}."
   end
