@@ -1,6 +1,7 @@
 # General
 *.swp
 *.tmp
+spec/dummy_*
 
 # setup.rb
 .config
