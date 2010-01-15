@@ -132,7 +132,7 @@ module Oughtve
         result.action! :tangent
       end
 
-      opts.on "-D", "--delete NAME", "Delete tangent." do |name|
+      opts.on "-D", "--delete [NAME]", "Delete tangent." do |name|
         result.action! :delete
         result.name = name
       end
