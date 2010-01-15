@@ -23,6 +23,21 @@ Jeweler::Tasks.new do |gem|
   gem.add_runtime_dependency      "do_sqlite3",   ">= 0.10.1"
 
   gem.add_development_dependency  "rspec",        ">= 1.3.0"
+
+  gem.post_install_message = <<-END
+
+  =======================================
+
+  Oughtve has been installed. Please run
+
+      $ oughtve --bootstrap
+
+  to set up your database if you have not
+  used Oughtve before.
+
+  =======================================
+
+  END
 end
 
 Jeweler::GemcutterTasks.new
