@@ -14,7 +14,7 @@ Jeweler::Tasks.new do |gem|
 
   gem.summary     = "Command-line tool for notes associated by filesystem location."
   gem.description = "Command-line tool for notes associated by filesystem location."
-  gem.email       = "projects@kittensoft.org"
+  gem.email       = "oughtve@projects.kittensoft.org"
   gem.homepage    = "http://github.com/rue/oughtve"
   gem.authors     = ["Eero Saynatkari"]
 
