@@ -47,10 +47,6 @@ require "optparse"
 require "ostruct"
 
 
-# Project
-require "oughtve/version"
-
-
 module Oughtve
 
   #
@@ -179,14 +175,6 @@ module Oughtve
 
       opts.on_tail "-h", "--help", "Display this message." do
         puts opts
-        exit!
-      end
-
-      opts.on_tail "-V", "--version", "Display Oughtve version" do
-        puts
-        puts "        Oughtve version #{Oughtve::VERSION.join(".")}."
-        puts "Copyright (c) 2006-2010 Eero Saynatkari."
-        puts
         exit!
       end
 
