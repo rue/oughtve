@@ -1,18 +1,25 @@
-
 begin
   require "rubygems"
-    require 'jeweler'
-
-  Jeweler::Tasks.new do |gemspec|
-    gemspec.name        = "oughtve"
-    gemspec.summary     = "Command-line tool for notes associated by filesystem location."
-    gemspec.description = "Command-line tool for notes associated by filesystem location."
-    gemspec.email       = "projects@kittensoft.org"
-    gemspec.homepage    = "http://github.com/rue/oughtve"
-    gemspec.authors     = ["Eero Saynatkari"]
-  end
-
+    require "jeweler"
 rescue LoadError
   puts "Jeweler not available. Install it with: gem install jeweler"
 end
+
+
+Jeweler::Tasks.new do |gem|
+  gem.name        = "oughtve"
+  gem.version     = "#{`git log --pretty=oneline | wc -l`.chomp}.0.0"
+  gem.summary     = "Command-line tool for notes associated by filesystem location."
+  gem.description = "Command-line tool for notes associated by filesystem location."
+  gem.email       = "projects@kittensoft.org"
+  gem.homepage    = "http://github.com/rue/oughtve"
+  gem.authors     = ["Eero Saynatkari"]
+
+  gem.add_dependency "dm-core"
+  gem.add_dependency "data_objects"
+  gem.add_dependency "do_sqlite3"
+
+end
+
+Jeweler::GemcutterTasks.new
 
