@@ -75,6 +75,7 @@ begin
   end
 
 ensure
+  FileUtils.rm_r dummy_dir, :secure => true rescue nil
   ENV['HOME'] = real_home
 end
 
