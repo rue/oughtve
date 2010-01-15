@@ -41,12 +41,14 @@ begin
   ENV['HOME'] = dummy_dir
 
   start = Time.now
-  examples, fails = 0, 0
+  examples, fails, pending = 0, 0, 0
 
   files.each do |spec|
     FileUtils.mkdir dummy_dir
 
-    puts "\n#{spec}:"
+    puts "\n\n    ***********************************"
+    puts "\n    #{spec}:"
+    puts "\n    ***********************************\n"
 
     if raw
       pid = fork {
@@ -57,9 +59,12 @@ begin
     else
       output = `spec #{opts} #{File.expand_path(spec)}`
 
-      stats = output.scan(/(\d+) examples?, (\d+) failures?/).first
-      examples += stats.first.to_i
-      fails += stats.last.to_i
+      stats = output.scan(/(\d+) examples?, (\d+) failures?(?:, (\d+) pending)?/).first
+
+      examples += stats[0].to_i
+      fails += stats[1].to_i
+      pending += stats[2].to_i if stats[2]
+
 
       puts output
     end
@@ -69,7 +74,8 @@ begin
 
   unless raw
     puts "\n\n========================\n"
-    puts "     Totals: #{fails}/#{examples}\n"
+    puts "     Totals: #{fails} failures out of #{examples} examples."
+    puts "             #{pending} marked pending."
     puts "     Time:   #{Time.now - start}s\n"
     puts
   end
