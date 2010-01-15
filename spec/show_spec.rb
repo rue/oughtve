@@ -213,6 +213,7 @@ describe Oughtve, "dumping a Tangent to YAML" do
   end
 
   it "contains all the data.. *sigh*" do
+    pending "Need to match all the data"
     fail
   end
 end
@@ -239,6 +240,7 @@ describe Oughtve, "dumping a Tangent to JSON" do
   end
 
   it "contains all the data.. *sigh*" do
+    pending "Need to match all the data"
     fail
   end
 end
