@@ -60,10 +60,10 @@ module Oughtve
     property    :id,          Serial
 
     # Time when closed
-    property    :ended,       Time,     :default => nil
+    property    :ended,       Time
 
     # Summary of what the chapter was about
-    property    :summary,     Text,     :default => nil
+    property    :summary,     Text
 
 
     belongs_to  :tangent

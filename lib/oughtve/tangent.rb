@@ -62,10 +62,10 @@ module Oughtve
     property  :id,      Serial
 
     # Base directory in which this Tangent lives
-    property  :dir,     String,   :nullable => false
+    property  :dir,     String,   :required => true
 
     # Name by which the Tangent can be accessed
-    property  :name,    String,   :nullable => false
+    property  :name,    String,   :required => true
 
     # Currently ongoing Chapter
     property  :current, Integer,  :nullable => false

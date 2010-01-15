@@ -56,13 +56,13 @@ module Oughtve
     property    :id,        Serial
 
     # Time at which entered (approximately anyway)
-    property    :time,      Time,     :nullable => false
+    property    :time,      Time,     :required => true
 
     # Note text
-    property    :text,      Text,     :nullable => false
+    property    :text,      Text,     :required => true
 
     # Whether struck out (done) and time of occurrence if so
-    property    :struck,    Time,     :default  => nil
+    property    :struck,    Time
 
 
     # We know nothing about no Tangents
