@@ -67,24 +67,22 @@ module Oughtve
     # Name by which the Tangent can be accessed
     property  :name,    String,   :required => true
 
+
+    # Current chapter. DM `has 1` relationship sucks, so do this.
     property  :current, Integer
 
     # Previous Chapters
     has n, :chapters
 
 
-    #
-    # Setter must also clear the entry from the other side.
-    #
+    # Set the current chapter.
     def current_chapter=(other)
       other.save unless other.id  # Force ID generation.
 
       self.current = other.id
     end
 
-    #
-    # Provided to complement #current_chapter=
-    #
+    # Current chapter.
     def current_chapter; Chapter.get! current if current; end
 
 
