@@ -14,7 +14,7 @@ describe Oughtve, "starting a new chapter" do
   end
 
   it "moves previous chapter to chapters and replaces it as current_chapter" do
-    tangent = Oughtve::Tangent.first :name.eql => "tangy"
+    tangent = Oughtve::Tangent.first :name => "tangy"
 
     previous = tangent.current_chapter
 
