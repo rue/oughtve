@@ -92,14 +92,15 @@ describe Oughtve, "scribing a new note" do
   end
 
   it "stores the time the note was created" do
-    before = Time.now
+    before = Time.now.to_f
     Oughtve.run %w[ --scribe --text He\ there ]
-    after = Time.now
+    after = Time.now.to_f
 
     verses = Oughtve::Tangent.first(:name => "scriby").current_chapter.verses
     verses.size.should == 1
     verses.first.text.should == "He there"
-    (before...after).should include(verses.first.time)
+
+    (before..after).should include(verses.first.time.to_f)
   end
 
   it "is not stricken" do
