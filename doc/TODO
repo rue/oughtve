@@ -1,27 +1,13 @@
  To Do
 =======
 
-- Improve command parser. Running out of letters. Complicated.
-  Maybe just subparsers for each action.
-
-- Improve synch or "feed" capabilities through the JSON or YAML
-  output, probably initially by including the IDs although just
-  the timestamp may be enough anyway.
+- Improve command parser. Guess more.
 
 - Separate into entry, view, manage scripts.
+
+- Need for several databases?
 
 - Delete orphaned Chapters and Verses.
 
 - Change the stupid names.
-
-- Allow changing the default path/name so that multiple binaries
-  could exist for shorthand.
-
-- Write some Tap tasks for specs &c.
-
-- Considering subsections per directory or allowing more than one
-  tangent per dir (requiring name to be given), but I think it leads
-  to overcomplicating things.
-
-- Some kind of tagging? Same overcomplicating issue.
 
