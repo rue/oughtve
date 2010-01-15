@@ -66,6 +66,7 @@ module Oughtve
     # Connect to database (new or existing)
     #
     def self.connect()
+      DataMapper::Logger.new(STDOUT, :debug) if $VERBOSE
       DataMapper.setup :default, URI
     end
 
