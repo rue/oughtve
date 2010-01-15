@@ -18,13 +18,13 @@ describe Oughtve, "marking notes done or closed with --strike using the note's I
 
     (!!verse.struck).should == false
 
-    before = Time.now
+    before = Time.now.to_f
     Oughtve.run "--strike --id #{verse.id}".split(" ")
-    after = Time.now
+    after = Time.now.to_f
 
     verse = Oughtve::Tangent.first(:name.eql => "tangy").current_chapter.verses.last
 
-    (before..after).should include(verse.struck)
+    (before..after).should include(verse.struck.to_f)
   end
 
   it "raises if the ID does not exist" do
@@ -51,13 +51,13 @@ describe Oughtve, "marking notes done or closed with --strike using text matchin
 
     (!!verse.struck).should == false
 
-    before = Time.now
+    before = Time.now.to_f
     Oughtve.run %w[--strike --tangent tangy --match Hi\ j ]
-    after = Time.now
+    after = Time.now.to_f
 
     verse = Oughtve::Tangent.first(:name.eql => "tangy").current_chapter.verses.last
 
-    (before..after).should include(verse.struck)
+    (before..after).should include(verse.struck.to_f)
   end
 
   it "raises if Note cannot be matched" do
@@ -92,13 +92,13 @@ describe Oughtve, "striking notes with parameter directly to --strike" do
 
     (!!verse.struck).should == false
 
-    before = Time.now
+    before = Time.now.to_f
     Oughtve.run %W[--strike #{verse.id} --tangent tangy ]
-    after = Time.now
+    after = Time.now.to_f
 
     verse = Oughtve::Tangent.first(:name.eql => "tangy").current_chapter.verses.last
 
-    (before..after).should include(verse.struck)
+    (before..after).should include(verse.struck.to_f)
   end
 
   it "uses parameter as regular expression if it is not an Integer" do
@@ -106,13 +106,13 @@ describe Oughtve, "striking notes with parameter directly to --strike" do
 
     (!!verse.struck).should == false
 
-    before = Time.now
+    before = Time.now.to_f
     Oughtve.run %w[ --strike Hi\ j --tangent tangy ]
-    after = Time.now
+    after = Time.now.to_f
 
     verse = Oughtve::Tangent.first(:name.eql => "tangy").current_chapter.verses.last
 
-    (before..after).should include(verse.struck)
+    (before..after).should include(verse.struck.to_f)
   end
 
 end
@@ -135,13 +135,13 @@ describe Oughtve, "marking notes done or closed with --strike" do
 
     (!!verse.struck).should == false
 
-    before = Time.now
+    before = Time.now.to_f
     Oughtve.run %w[--strike --tangent tangy --match Hi\ j ]
-    after = Time.now
+    after = Time.now.to_f
 
     verse = Oughtve::Tangent.first(:name.eql => "tangy").current_chapter.verses.last
 
-    (before..after).should include(verse.struck)
+    (before..after).should include(verse.struck.to_f)
 
     lambda { Oughtve.run %w[ --strike --tangent tangy --match Hi\ j ] }.should raise_error
   end
