@@ -67,21 +67,13 @@ module Oughtve
     # Name by which the Tangent can be accessed
     property  :name,    String,   :required => true
 
-    # Currently ongoing Chapter
-    property  :current, Integer,  :nullable => false
+
+    # Chapter in use
+    has 1, :current_chapter, "Chapter"
 
     # Previous Chapters
     has n, :chapters
 
-
-    def current_chapter()
-      Chapter.get! self.current
-    end
-
-    def current_chapter=(chapter)
-      self.current = chapter.id
-      chapter.save
-    end
 
     #
     # Hash representation, including all Verses.
