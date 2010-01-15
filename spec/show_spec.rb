@@ -62,7 +62,7 @@ describe Oughtve, "viewing notes with --verbose" do
   it "includes time when note was scribed" do
     outputs = Oughtve.run(%w[ --show --tangent tangy --verbose ]).split "\n"
     outputs.reject! {|line| line.nil? or line.empty? or line.strip =~ /^(-|=)+$/ }
-    verses = Oughtve::Tangent.first(:name.eql => "tangy").current_chapter.verses.reverse
+    verses = Oughtve::Tangent.first(:name => "tangy").current_chapter.verses.reverse
 
     outputs.shift.should =~ /tangy/
     outputs.shift.should =~ /Open/
