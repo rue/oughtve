@@ -67,12 +67,25 @@ module Oughtve
     # Name by which the Tangent can be accessed
     property  :name,    String,   :required => true
 
-
-    # Chapter in use
-    has 1, :current_chapter, "Chapter"
+    property  :current, Integer
 
     # Previous Chapters
     has n, :chapters
+
+
+    #
+    # Setter must also clear the entry from the other side.
+    #
+    def current_chapter=(other)
+      other.save unless other.id  # Force ID generation.
+
+      self.current = other.id
+    end
+
+    #
+    # Provided to complement #current_chapter=
+    #
+    def current_chapter; Chapter.get! current if current; end
 
 
     #
@@ -110,8 +123,8 @@ module Oughtve
     chapter = tangent.chapters.new
     tangent.current_chapter = chapter
 
-    chapter.save
     tangent.save
+    chapter.save
 
     "Chapter of \"#{tangent.name}\" finished."
   end

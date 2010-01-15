@@ -66,8 +66,9 @@ module Oughtve
     property    :summary,     Text
 
 
-    belongs_to  :tangent
     has n,      :verses
+
+    belongs_to  :tangent
 
 
     #
