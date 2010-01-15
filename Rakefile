@@ -9,7 +9,7 @@ end
 Jeweler::Tasks.new do |gem|
   gem.name        = "oughtve"
 
-  gem.version     = "#{`git log --pretty=oneline | wc -l`.chomp}.#{`git log -1 --pretty=oneline`[0...8]}"
+  gem.version     = `git log --pretty=oneline | wc -l`.chomp
 
 
   gem.summary     = "Command-line tool for notes associated by filesystem location."
