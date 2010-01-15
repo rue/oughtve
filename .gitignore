@@ -6,4 +6,6 @@ spec/dummy_*
 # setup.rb
 .config
 InstalledFiles
+oughtve.gemspec
+pkg/
 
