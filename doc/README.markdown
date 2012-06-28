@@ -11,12 +11,18 @@
  What?
 -------
 
-Oughtve is a very simple command-line- and directory-based
-notation tool, always at your fingertips to avoid the few
+Oughtve is a very simple command-line notation tool based on
+your filesystem location, always at your fingertips to avoid the few
 seconds/minutes/aeons that invariably cause you to lose the
 thought you had.
 
 Yeah. It lets you make notes. *And* read them later.
+
+
+ Status
+--------
+
+Waiting for a rewrite, but feel free to muck with it.
 
 
  Why?
