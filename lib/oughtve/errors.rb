@@ -1,4 +1,3 @@
-
 #
 # Special type for our errors.
 #

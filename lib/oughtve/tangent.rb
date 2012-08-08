@@ -1,48 +1,3 @@
-#  LICENCE
-# =========
-#
-#  Authors
-# ---------
-#
-#   See doc/AUTHORS.
-#
-#
-#  Copyright
-# -----------
-#
-#   Copyright (c) 2006-2010 Eero Saynatkari, all rights reserved.
-#
-#
-#  Licence
-# ---------
-#
-#   Redistribution and use in source and binary forms, with or without
-#   modification, are permitted provided that the following conditions
-#   are met:
-#
-#   - Redistributions of source code must retain the above copyright
-#     notice, this list of conditions, the following disclaimer and
-#     attribution to the original authors.
-#
-#   - Redistributions in binary form must reproduce the above copyright
-#     notice, this list of conditions, the following disclaimer and
-#     attribution to the original authors in the documentation and/or
-#     other materials provided with the distribution.
-#
-#   - The names of the authors may not be used to endorse or promote
-#     products derived from this software without specific prior
-#     written permission.
-#
-#
-#  Disclaimer
-# ------------
-#
-#   This software is provided "as is" and without any express or
-#   implied warranties, including, without limitation, the implied
-#   warranties of merchantability and fitness for a particular purpose.
-#   Authors are not responsible for any damages, direct or indirect.
-#
-
 module Oughtve
 
   # Forward-declare Chapter.
@@ -138,10 +93,9 @@ module Oughtve
     raise ArgumentError, "Default tangent may not be deleted!" if parameters.name == "default"
 
     tangent = tangent_for parameters
-    path = tangent.dir
-
     raise ArgumentError, "No tangent named `#{parameters.name}'!" unless tangent
 
+    path = tangent.dir
     tangent.destroy
 
     "Deleted `#{parameters.name}', which was bound at #{path}"
@@ -166,6 +120,7 @@ module Oughtve
   #
   def self.scribe(parameters)
     tangent = tangent_for parameters
+    raise ArgumentError, "No tangent found for name!" unless tangent
 
     text = parameters.text || ""
     text << " " << parameters.rest.join(" ") unless parameters.rest.empty?
@@ -190,6 +145,7 @@ module Oughtve
   #
   def self.show(parameters)
     tangent = tangent_for parameters
+    raise ArgumentError, "No tangent found for name!" unless tangent
 
     case parameters.format
     when :yaml
@@ -250,7 +206,7 @@ module Oughtve
   #
   def self.strike(parameters)
     verse = if parameters.serial
-              Verse.get! parameters.serial
+              Verse.get(parameters.serial) or raise ArgumentError, "No verse for id #{parameters.serial}!"
             else
               tangent = tangent_for parameters
               candidates =  tangent.current_chapter.verses.select {|v|
