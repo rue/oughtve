@@ -80,18 +80,9 @@ following to enter a note:
 - Ruby
   - 1.8.7, 1.9.1, 1.9.2, jruby-1.4
 
-- Gems
-  - dm-core        >= 0.10.2
-  - data_objects   >= 0.10.1
-  - do_sqlite3     >= 0.10.1
-
 - Other
   - [SQLite3](http://sqlite.org)
   - UNIXy system.
-
-- Development
-  - Gems
-  - RSpec (>= 1.3.0)
 
 
  Status
