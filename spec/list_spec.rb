@@ -1,8 +1,9 @@
-require File.join File.dirname(__FILE__), "spec_helper"
+require_relative "./spec_helper"
 
 describe Oughtve, "listing defined tangents" do
 
-  before :all do
+  before :each do
+    Oughtve.bootstrap
     Oughtve.run %w[ --new --tangent tangy --directory /tmp ]
   end
 
@@ -14,12 +15,12 @@ describe Oughtve, "listing defined tangents" do
     outputs.shift
 
     line = outputs.shift
-    line.should =~ /default/
-    line.should =~ /\//
+    line.must_match /default/
+    line.must_match /\//
 
     line = outputs.shift
-    line.should =~ /tangy/
-    line.should =~ /\/tmp/
+    line.must_match /tangy/
+    line.must_match /\/tmp/
   end
 
 end
